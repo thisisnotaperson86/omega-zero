@@ -103,7 +103,7 @@ fn stand_in(core: Core) -> MockCore {
         Core::PcsxRearmed => MockCore::sized(320, 240),
         Core::PceFast => MockCore::sized(256, 240),
         Core::Fceumm => MockCore::sized(256, 224),
-        Core::GenesisPlusGx => MockCore::sized(320, 224),
+        Core::GenesisPlusGx | Core::PicoDrive => MockCore::sized(320, 224),
     }
 }
 
@@ -208,7 +208,8 @@ pub fn colour_option(which: Core, on: bool) -> Option<(&'static str, &'static st
         | Core::PcsxRearmed
         | Core::PceFast
         | Core::Fceumm
-        | Core::GenesisPlusGx => None,
+        | Core::GenesisPlusGx
+        | Core::PicoDrive => None,
     }
 }
 
@@ -226,6 +227,10 @@ pub fn ghosting_option(which: Core, on: bool) -> Option<(&'static str, &'static 
         Core::GenesisPlusGx => Some((
             "genesis_plus_gx_lcd_filter",
             if on { "enabled" } else { "disabled" },
+        )),
+        Core::PicoDrive => Some((
+            "picodrive_ggghost",
+            if on { "normal" } else { "off" },
         )),
         Core::Snes9x | Core::Supafaust | Core::PcsxRearmed | Core::PceFast | Core::Fceumm => None,
     }
@@ -344,6 +349,12 @@ pub fn core_options(
             put("fceumm_overscan_v_bottom", "8");
         }
         Core::GenesisPlusGx => put("genesis_plus_gx_frameskip", "auto"),
+        // PicoDrive skips frames through `picodrive_frameskip`, and plugs a six button pad into
+        // port 1: its X, Y and Z are on L1, X and R1, as the frontend lays them out
+        Core::PicoDrive => {
+            put("picodrive_frameskip", "auto");
+            put("picodrive_input1", "6 button pad");
+        }
     }
     if let Some((key, value)) = colour_option(which, colour) {
         put(key, value);

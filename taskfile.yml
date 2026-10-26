@@ -21,16 +21,17 @@ vars:
   PCE_FAST_COMMIT: 3f946f277aef3aa99a95551618bbcd1dd2bda0d9
   FCEUMM_COMMIT: ac0d00a7fc01166f84c7bac01d1084ebfd2b865e
   GPGX_COMMIT: aa74d79634cd230f65cce4180e92688e53883d2f
+  PICODRIVE_COMMIT: 1890c2932234c9d30f4cd3851d02228baae8f09e
   EXFATPROGS_VERSION: 1.4.3
   EXFATPROGS_SHA256: 4b5052cba6ff9f6dcb1c63eeeac328620472c5b0b3caf3d38e4ada50e75469d3
   # The libretro names of the cores the device bundle ships, <name>_libretro.so in System/
   DEVICE_CORES: mgba gpsp snes9x mednafen_supafaust pcsx_rearmed mednafen_pce_fast fceumm
-    genesis_plus_gx
+    genesis_plus_gx picodrive
   # The cores built by cores/<name>/build.sh whose source archive ships in System/licenses/
   # beside them, as <name>:<libretro name>. gpSP's ships too, the way it always has
   SOURCE_CORES: >-
     snes9x:snes9x supafaust:mednafen_supafaust pcsx_rearmed:pcsx_rearmed
-    pce_fast:mednafen_pce_fast fceumm:fceumm genesis_plus_gx:genesis_plus_gx
+    pce_fast:mednafen_pce_fast fceumm:fceumm genesis_plus_gx:genesis_plus_gx picodrive:picodrive
 
 tasks:
   default:
@@ -684,6 +685,34 @@ tasks:
         vendor/genesis_plus_gx-src.sha
       - task: core:genesis_plus_gx
 
+  core:picodrive:
+    desc: >-
+      Build the aarch64 linux PicoDrive core from its pinned source and the submodules its
+      libretro build reads, packed as one archive that ships beside it as its licence asks of a
+      build of its source
+    status:
+      - test -f vendor/picodrive_libretro.so
+      - test "$(cat vendor/picodrive-src.sha 2>/dev/null)" = "{{.PICODRIVE_COMMIT}}"
+      - test "$(cat vendor/picodrive_libretro.so.meta 2>/dev/null)" = "$(sh cores/picodrive/build.sh stamp {{.PICODRIVE_COMMIT}})"
+    cmds:
+      - |
+        set -eu
+        mkdir -p vendor
+        if [ ! -f vendor/picodrive-src.tar.gz ] || [ "$(cat vendor/picodrive-src.sha 2>/dev/null)" != "{{.PICODRIVE_COMMIT}}" ]; then
+          rm -f vendor/picodrive-src.tar.gz vendor/picodrive-src.sha
+          sh cores/picodrive/fetch.sh {{.PICODRIVE_COMMIT}} vendor/picodrive-src.tar.gz
+          echo "{{.PICODRIVE_COMMIT}}" > vendor/picodrive-src.sha
+        fi
+      - task: device:sh
+        vars:
+          CMD: >-
+            sh cores/picodrive/build.sh build {{.PICODRIVE_COMMIT}} vendor/picodrive-src.tar.gz
+            target-device/picodrive vendor/picodrive_libretro.so
+      - file vendor/picodrive_libretro.so | grep -q aarch64
+      - >-
+        echo "built vendor/picodrive_libretro.so from vendor/picodrive-src.tar.gz @
+        {{.PICODRIVE_COMMIT}}"
+
   fsck:exfat:
     desc: >-
       Build a static aarch64 fsck.exfat for the card repair from the pinned exfatprogs release,
@@ -736,7 +765,7 @@ tasks:
   cores:device:
     desc: >-
       Build every core the device bundle ships, mGBA, gpSP, Snes9x, Supafaust, pcsx_rearmed,
-      Beetle PCE Fast, FCEUmm and Genesis Plus GX
+      Beetle PCE Fast, FCEUmm, Genesis Plus GX and PicoDrive
     deps:
       - core:device
       - core:gpsp
@@ -746,6 +775,7 @@ tasks:
       - core:pce_fast
       - core:fceumm
       - core:genesis_plus_gx
+      - core:picodrive
       - fsck:exfat
 
   device:sh:
