@@ -702,21 +702,35 @@ tasks:
         echo "{{.EXFATPROGS_SHA256}}  vendor/exfatprogs-{{.EXFATPROGS_VERSION}}.tar.gz" | sha256sum -c -
       - |
         set -eu
-        docker run --rm --platform linux/amd64 -v "$PWD":/src -w /src rust:1-bullseye sh -c '
-          set -e
-          sed -i "/bullseye-security/d" /etc/apt/sources.list
-          apt-get -o Acquire::Check-Valid-Until=false update -qq
-          apt-get install -y -qq gcc-aarch64-linux-gnu libc6-dev-arm64-cross >/dev/null
+        if [ "$(uname -s)-$(uname -m)" = "Linux-aarch64" ]; then
+          # already on an arm64 box (the CI runner): build natively, no docker needed
+          root="$PWD"
           rm -rf target-device/exfatprogs
           mkdir -p target-device/exfatprogs
           tar -xzf vendor/exfatprogs-{{.EXFATPROGS_VERSION}}.tar.gz -C target-device/exfatprogs
           cd target-device/exfatprogs/exfatprogs-{{.EXFATPROGS_VERSION}}
-          ./configure --quiet --host=aarch64-linux-gnu
+          ./configure --quiet
           make -s -C lib
           make -s -C fsck LDFLAGS=-all-static
-          aarch64-linux-gnu-strip fsck/fsck.exfat
-          cp fsck/fsck.exfat /src/vendor/fsck.exfat
-          chown -R '"$(id -u):$(id -g)"' /src/vendor /src/target-device'
+          strip fsck/fsck.exfat
+          cp fsck/fsck.exfat "$root/vendor/fsck.exfat"
+        else
+          docker run --rm --platform linux/amd64 -v "$PWD":/src -w /src rust:1-bullseye sh -c '
+            set -e
+            sed -i "/bullseye-security/d" /etc/apt/sources.list
+            apt-get -o Acquire::Check-Valid-Until=false update -qq
+            apt-get install -y -qq gcc-aarch64-linux-gnu libc6-dev-arm64-cross >/dev/null
+            rm -rf target-device/exfatprogs
+            mkdir -p target-device/exfatprogs
+            tar -xzf vendor/exfatprogs-{{.EXFATPROGS_VERSION}}.tar.gz -C target-device/exfatprogs
+            cd target-device/exfatprogs/exfatprogs-{{.EXFATPROGS_VERSION}}
+            ./configure --quiet --host=aarch64-linux-gnu
+            make -s -C lib
+            make -s -C fsck LDFLAGS=-all-static
+            aarch64-linux-gnu-strip fsck/fsck.exfat
+            cp fsck/fsck.exfat /src/vendor/fsck.exfat
+            chown -R '"$(id -u):$(id -g)"' /src/vendor /src/target-device'
+        fi
       - file vendor/fsck.exfat | grep -q 'aarch64.*statically linked'
 
   cores:device:
