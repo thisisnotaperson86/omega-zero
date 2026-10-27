@@ -101,7 +101,8 @@ pub fn gb_shell_of(cart: &Cart) -> Option<GbShell> {
         | Platform::Nes
         | Platform::Md
         | Platform::Gg
-        | Platform::Sms => None,
+        | Platform::Sms
+        | Platform::PceCd => None,
         Platform::Gb | Platform::Gbc => Some(match cart.shell.map(|c| c.outline) {
             Some(Outline::Notched) => GbShell::Notched,
             Some(Outline::Rounded) => GbShell::Rounded,
@@ -121,7 +122,7 @@ pub fn model_of(cart: &Cart) -> CartModel {
             CartModel::Gb(gb_shell_of(cart).unwrap_or(GbShell::Notched))
         }
         Platform::Snes => CartModel::Snes(snes::shell_of(cart)),
-        Platform::Ps1 => CartModel::Disc,
+        Platform::Ps1 | Platform::PceCd => CartModel::Disc,
         Platform::Pce => CartModel::HuCard,
         Platform::Nes => CartModel::Nes(nes::shell_of(cart)),
         Platform::Md => CartModel::Md(md::shell_of(cart)),
@@ -206,7 +207,7 @@ pub fn seated_box(platform: Platform) -> (u32, u32) {
             let (_, (w, h)) = snes::outline(SnesShell::Famicom);
             (w.round() as u32, h.round() as u32)
         }
-        Platform::Ps1 => {
+        Platform::Ps1 | Platform::PceCd => {
             let (_, (w, h)) = crate::spin::outline(CartModel::Disc);
             (w.round() as u32, h.round() as u32)
         }
@@ -224,7 +225,7 @@ pub fn cart_box(platform: Platform) -> (u32, u32) {
         Platform::Nes => CartModel::Nes(NesShell::Nes),
         Platform::Gb | Platform::Gbc => CartModel::Gb(GbShell::Notched),
         Platform::Snes => CartModel::Snes(SnesShell::Famicom),
-        Platform::Ps1 => CartModel::Disc,
+        Platform::Ps1 | Platform::PceCd => CartModel::Disc,
     })
 }
 
@@ -270,7 +271,7 @@ pub fn face_labels(platform: Platform) -> Vec<(u32, u32)> {
             CartModel::HuCard => platform == Platform::Pce,
             CartModel::Gb(_) => matches!(platform, Platform::Gb | Platform::Gbc),
             CartModel::Snes(_) => platform == Platform::Snes,
-            CartModel::Disc => platform == Platform::Ps1,
+            CartModel::Disc => matches!(platform, Platform::Ps1 | Platform::PceCd),
         })
         .map(|model| match model {
             CartModel::Disc => (disc::DISC_PX, disc::DISC_PX),

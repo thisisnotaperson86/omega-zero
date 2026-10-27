@@ -209,6 +209,7 @@ pub fn system_id(platform: Platform) -> u32 {
         Platform::Md => 1,
         Platform::Gg => 21,
         Platform::Sms => 2,
+        Platform::PceCd => 114,
     }
 }
 
@@ -352,7 +353,7 @@ pub fn label_regions(want: &Want) -> Vec<&'static str> {
         }
         // the label suits the card it is drawn on, as the shell does: an American game's black
         // TurboChip takes an American label, any other game's HuCard a Japanese one
-        Platform::Pce => {
+        Platform::Pce | Platform::PceCd => {
             if Region::from_tags(&want.stem) == Some(Region::Usa) {
                 out.retain(|r| AMERICA.contains(r) || *r == "wor");
                 out.extend(["us", "wor", "jp", "eu"]);

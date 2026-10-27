@@ -74,10 +74,10 @@ fn a_game_gear_game_ghosts_through_genesis_plus_gxs_lcd_filter() {
 }
 
 #[test]
-fn a_game_gear_game_at_its_actual_size_stands_as_a_game_boy_game_at_3x_over_the_body() {
+fn a_game_gear_game_at_its_actual_size_stands_as_a_game_boy_game_at_3x_in_the_middle_of_the_body() {
     for (c, x) in [(Canvas::FOUR_THREE, 80.0), (Canvas::WIDE, 120.0)] {
         let s = screen_on(c, Platform::Gg, VideoMode::Actual);
-        assert_eq!(s.view.rect, [x, 0.0, 480.0, 432.0], "{c:?}");
+        assert_eq!(s.view.rect, [x, 24.0, 480.0, 432.0], "{c:?}");
         assert_eq!(
             s.view.rect,
             screen_on(c, Platform::Gb, VideoMode::Actual).view.rect

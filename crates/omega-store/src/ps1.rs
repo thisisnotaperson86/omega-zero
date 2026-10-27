@@ -66,6 +66,13 @@ pub fn disc_label(root: &Path, disc: &Path) -> PathBuf {
 /// particular order. Writes the playlists games on several discs need, and clears away those no
 /// game needs any more. Fails only when `dir` itself cannot be read.
 pub fn games(root: &Path, dir: &Path) -> std::io::Result<Vec<Game>> {
+    games_of(root, dir, Platform::Ps1)
+}
+
+/// The games in `dir`, a disc system's Games folder, by the same rules as the PlayStation's:
+/// a PC Engine CD's `.cue`, `.chd` and `.m3u` are found as a PlayStation's are, and its
+/// playlists kept under `Config/playlists/<system>`.
+pub fn games_of(root: &Path, dir: &Path, platform: Platform) -> std::io::Result<Vec<Game>> {
     let (mut files, folders) = list(dir)?;
     for folder in folders {
         match list(&folder) {
@@ -73,7 +80,7 @@ pub fn games(root: &Path, dir: &Path) -> std::io::Result<Vec<Game>> {
             Err(e) => eprintln!("omega-zero: scan: {}: {e}", folder.display()),
         }
     }
-    files.retain(|f| Platform::Ps1.accepts(f));
+    files.retain(|f| platform.accepts(f));
     files.sort();
 
     let (playlists, discs_found): (Vec<PathBuf>, Vec<PathBuf>) =
@@ -111,7 +118,10 @@ pub fn games(root: &Path, dir: &Path) -> std::io::Result<Vec<Game>> {
         }
     }
 
-    let playlist_dir = root.join(PLAYLISTS_DIR);
+    let playlist_dir = match platform {
+        Platform::Ps1 => root.join(PLAYLISTS_DIR),
+        other => root.join("Config/playlists").join(other.dir_name()),
+    };
     let mut written = HashSet::new();
     for (_, (base, mut set)) in sets {
         set.sort();

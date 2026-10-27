@@ -46,7 +46,7 @@ pub fn scan(root: &Path) -> Result<Vec<Cart>, StoreError> {
     for platform in Platform::ALL {
         let dir = root.join("Games").join(platform.dir_name());
         let found = match platform {
-            Platform::Ps1 => crate::ps1::games(root, &dir)
+            Platform::Ps1 | Platform::PceCd => crate::ps1::games_of(root, &dir, platform)
                 .map(|games| games.into_iter().map(|g| (g.stem, g.rom)).collect()),
             _ => flat(&dir, platform),
         };
@@ -77,7 +77,7 @@ pub fn scan(root: &Path) -> Result<Vec<Cart>, StoreError> {
                 Platform::Ps1 => (String::new(), crate::ps1::serial(&rom).unwrap_or_default()),
                 // a HuCard, an iNES image or a Sega 8-bit cart carries no header to read a title
                 // or code from
-                Platform::Pce | Platform::Nes | Platform::Gg | Platform::Sms => {
+                Platform::Pce | Platform::PceCd | Platform::Nes | Platform::Gg | Platform::Sms => {
                     (String::new(), String::new())
                 }
                 Platform::Md => (

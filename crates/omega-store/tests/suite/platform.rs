@@ -5,7 +5,7 @@ fn every_platform_has_a_directory() {
     let names: Vec<&str> = Platform::ALL.iter().map(|p| p.dir_name()).collect();
     assert_eq!(
         names,
-        vec!["GBA", "GB", "GBC", "SNES", "PS1", "PCE", "NES", "MD", "GG", "SMS"]
+        vec!["GBA", "GB", "GBC", "SNES", "PS1", "PCE", "NES", "MD", "GG", "SMS", "PCECD"]
     );
 }
 
@@ -23,7 +23,8 @@ fn every_platform_is_a_shelf_of_its_own() {
             Platform::Nes,
             Platform::Md,
             Platform::Gg,
-            Platform::Sms
+            Platform::Sms,
+            Platform::PceCd
         ]
     );
     for (i, p) in Platform::ALL.iter().enumerate() {
@@ -47,4 +48,29 @@ fn each_platform_takes_only_its_own_extensions() {
     assert!(!Platform::Snes.accepts(std::path::Path::new("Bonk's Adventure.pce")));
     assert!(Platform::Nes.accepts(std::path::Path::new("Super Mario Bros. (World).nes")));
     assert!(!Platform::Nes.accepts(std::path::Path::new("Zelda no Densetsu.fds")));
+}
+
+#[test]
+fn a_pc_engine_cd_game_is_found_by_its_cue_and_never_by_its_bin() {
+    let d = tempfile::tempdir().unwrap();
+    let dir = d.path().join("Games/PCECD/Ys Book I & II");
+    std::fs::create_dir_all(&dir).unwrap();
+    std::fs::write(dir.join("Ys Book I & II.cue"), "FILE \"Ys Book I & II.bin\" BINARY\n").unwrap();
+    std::fs::write(dir.join("Ys Book I & II.bin"), [0u8; 16]).unwrap();
+    std::fs::create_dir_all(d.path().join("Games/PCE")).unwrap();
+    std::fs::write(d.path().join("Games/PCE/Bonk.pce"), [0u8; 16]).unwrap();
+
+    let carts = omega_store::scan(d.path()).unwrap();
+    let cd: Vec<_> = carts
+        .iter()
+        .filter(|c| c.platform == Platform::PceCd)
+        .map(|c| c.stem.as_str())
+        .collect();
+    assert_eq!(cd, ["Ys Book I & II"]);
+    let cards: Vec<_> = carts
+        .iter()
+        .filter(|c| c.platform == Platform::Pce)
+        .map(|c| c.stem.as_str())
+        .collect();
+    assert_eq!(cards, ["Bonk"]);
 }

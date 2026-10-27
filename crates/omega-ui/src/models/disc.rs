@@ -81,7 +81,7 @@ pub const SPIN: f32 = 0.0;
 /// [`MAX_STACK`].
 pub fn stack_of(cart: &Cart) -> usize {
     match cart.platform {
-        Platform::Ps1 => ps1::discs(&cart.rom).len().clamp(1, MAX_STACK),
+        Platform::Ps1 | Platform::PceCd => ps1::discs(&cart.rom).len().clamp(1, MAX_STACK),
         _ => 1,
     }
 }

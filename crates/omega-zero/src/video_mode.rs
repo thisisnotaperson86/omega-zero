@@ -121,6 +121,7 @@ fn is_console(platform: Platform) -> bool {
         Platform::Snes
             | Platform::Ps1
             | Platform::Pce
+            | Platform::PceCd
             | Platform::Nes
             | Platform::Md
             | Platform::Sms
@@ -177,6 +178,7 @@ pub fn screen_on_frame(
         | Platform::Snes
         | Platform::Ps1
         | Platform::Pce
+        | Platform::PceCd
         | Platform::Nes
         | Platform::Md
         | Platform::Sms => {

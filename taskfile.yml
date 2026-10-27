@@ -22,16 +22,17 @@ vars:
   FCEUMM_COMMIT: ac0d00a7fc01166f84c7bac01d1084ebfd2b865e
   GPGX_COMMIT: aa74d79634cd230f65cce4180e92688e53883d2f
   PICODRIVE_COMMIT: 1890c2932234c9d30f4cd3851d02228baae8f09e
+  PCE_COMMIT: b96c11e095b6a40a412d2da02766ae1c3f4fd539
   EXFATPROGS_VERSION: 1.4.3
   EXFATPROGS_SHA256: 4b5052cba6ff9f6dcb1c63eeeac328620472c5b0b3caf3d38e4ada50e75469d3
   # The libretro names of the cores the device bundle ships, <name>_libretro.so in System/
   DEVICE_CORES: mgba gpsp snes9x mednafen_supafaust pcsx_rearmed mednafen_pce_fast fceumm
-    genesis_plus_gx picodrive
+    genesis_plus_gx picodrive mednafen_pce
   # The cores built by cores/<name>/build.sh whose source archive ships in System/licenses/
   # beside them, as <name>:<libretro name>. gpSP's ships too, the way it always has
   SOURCE_CORES: >-
     snes9x:snes9x supafaust:mednafen_supafaust pcsx_rearmed:pcsx_rearmed
-    pce_fast:mednafen_pce_fast fceumm:fceumm genesis_plus_gx:genesis_plus_gx picodrive:picodrive
+    pce_fast:mednafen_pce_fast fceumm:fceumm genesis_plus_gx:genesis_plus_gx picodrive:picodrive pce:mednafen_pce
 
 tasks:
   default:
@@ -545,6 +546,31 @@ tasks:
         echo "built vendor/mednafen_pce_fast_libretro.so from vendor/pce_fast-src.tar.gz @
         {{.PCE_FAST_COMMIT}}"
 
+  core:pce:
+    desc: >-
+      Build the aarch64 linux Beetle PCE core from its pinned source archive, which ships
+      beside it as its GPL-2.0 section 3(a) corresponding source
+    status:
+      - test -f vendor/mednafen_pce_libretro.so
+      - test "$(cat vendor/pce-src.sha 2>/dev/null)" = "{{.PCE_COMMIT}}"
+      - test "$(cat vendor/mednafen_pce_libretro.so.meta 2>/dev/null)" = "$(sh cores/pce/build.sh stamp {{.PCE_COMMIT}})"
+    cmds:
+      - task: core:src
+        vars:
+          NAME: pce
+          REPO: beetle-pce-libretro
+          COMMIT: '{{.PCE_COMMIT}}'
+          FILE: Makefile
+      - task: device:sh
+        vars:
+          CMD: >-
+            sh cores/pce/build.sh build {{.PCE_COMMIT}} vendor/pce-src.tar.gz
+            target-device/pce vendor/mednafen_pce_libretro.so
+      - file vendor/mednafen_pce_libretro.so | grep -q aarch64
+      - >-
+        echo "built vendor/mednafen_pce_libretro.so from vendor/pce-src.tar.gz @
+        {{.PCE_COMMIT}}"
+
   core:pce_fast:cross:
     desc: >-
       core:pce_fast on an x86_64 host without arm64 emulation: cross-compiled in an amd64
@@ -776,6 +802,7 @@ tasks:
       - core:fceumm
       - core:genesis_plus_gx
       - core:picodrive
+      - core:pce
       - fsck:exfat
 
   device:sh:

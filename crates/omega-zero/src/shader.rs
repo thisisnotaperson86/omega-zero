@@ -33,6 +33,7 @@ pub fn looks_for(platform: Platform) -> &'static [Look] {
         Platform::Snes
         | Platform::Ps1
         | Platform::Pce
+        | Platform::PceCd
         | Platform::Nes
         | Platform::Md
         | Platform::Sms => &[

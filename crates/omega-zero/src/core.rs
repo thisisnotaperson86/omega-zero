@@ -101,7 +101,7 @@ fn stand_in(core: Core) -> MockCore {
         Core::Mgba | Core::Gpsp => MockCore::new(),
         Core::Snes9x | Core::Supafaust => MockCore::sized(256, 224),
         Core::PcsxRearmed => MockCore::sized(320, 240),
-        Core::PceFast => MockCore::sized(256, 240),
+        Core::PceFast | Core::BeetlePce => MockCore::sized(256, 240),
         Core::Fceumm => MockCore::sized(256, 224),
         Core::GenesisPlusGx | Core::PicoDrive => MockCore::sized(320, 224),
     }
@@ -207,6 +207,7 @@ pub fn colour_option(which: Core, on: bool) -> Option<(&'static str, &'static st
         | Core::Supafaust
         | Core::PcsxRearmed
         | Core::PceFast
+        | Core::BeetlePce
         | Core::Fceumm
         | Core::GenesisPlusGx
         | Core::PicoDrive => None,
@@ -232,7 +233,12 @@ pub fn ghosting_option(which: Core, on: bool) -> Option<(&'static str, &'static 
             "picodrive_ggghost",
             if on { "normal" } else { "off" },
         )),
-        Core::Snes9x | Core::Supafaust | Core::PcsxRearmed | Core::PceFast | Core::Fceumm => None,
+        Core::Snes9x
+        | Core::Supafaust
+        | Core::PcsxRearmed
+        | Core::PceFast
+        | Core::BeetlePce
+        | Core::Fceumm => None,
     }
 }
 
@@ -344,6 +350,9 @@ pub fn core_options(
             put("pcsx_rearmed_memcard2", "none");
         }
         Core::PceFast => put("pce_fast_frameskip", "auto"),
+        // Beetle PCE has no frameskip to turn on, and keeps its defaults, the System Card 3
+        // among them
+        Core::BeetlePce => {}
         Core::Fceumm => {
             put("fceumm_overscan_v_top", "8");
             put("fceumm_overscan_v_bottom", "8");

@@ -460,6 +460,7 @@ impl Session {
             Platform::Snes
             | Platform::Ps1
             | Platform::Pce
+            | Platform::PceCd
             | Platform::Nes
             | Platform::Md
             | Platform::Sms => Setup::Console,

@@ -13,10 +13,11 @@ pub enum Platform {
     Md,
     Gg,
     Sms,
+    PceCd,
 }
 
 impl Platform {
-    pub const ALL: [Platform; 10] = [
+    pub const ALL: [Platform; 11] = [
         Platform::Gba,
         Platform::Gb,
         Platform::Gbc,
@@ -27,6 +28,7 @@ impl Platform {
         Platform::Md,
         Platform::Gg,
         Platform::Sms,
+        Platform::PceCd,
     ];
 
     pub fn name(self) -> &'static str {
@@ -41,6 +43,7 @@ impl Platform {
             Platform::Md => "Mega Drive",
             Platform::Gg => "Game Gear",
             Platform::Sms => "Master System",
+            Platform::PceCd => "PC Engine CD",
         }
     }
 
@@ -56,6 +59,7 @@ impl Platform {
             Platform::Md => "MD",
             Platform::Gg => "GG",
             Platform::Sms => "SMS",
+            Platform::PceCd => "PCECD",
         }
     }
 
@@ -70,6 +74,7 @@ impl Platform {
             Platform::Md => &["md", "gen", "bin"],
             Platform::Gg => &["gg"],
             Platform::Sms => &["sms"],
+            Platform::PceCd => &["cue", "chd", "m3u"],
         }
     }
 
@@ -84,6 +89,7 @@ impl Platform {
             Platform::Md => (320, 224),
             Platform::Gg => (160, 144),
             Platform::Sms => (256, 192),
+            Platform::PceCd => (256, 240),
         }
     }
 

@@ -47,16 +47,16 @@ fn on_640x480_a_gba_game_fills_the_width_from_the_top_over_a_bezel() {
 }
 
 #[test]
-fn a_game_boy_game_at_its_actual_size_is_its_window_at_3x_on_the_top_edge_over_the_body() {
+fn a_game_boy_game_at_its_actual_size_is_its_window_at_3x_in_the_middle_of_the_body() {
     for (c, x) in [(Canvas::FOUR_THREE, 80.0), (Canvas::WIDE, 120.0)] {
         for platform in [Platform::Gb, Platform::Gbc] {
             let s = screen_on(c, platform, VideoMode::Actual);
             assert_eq!(s.view.filter, Filter::Sharp);
             assert_eq!(s.view.uv, source_rect(platform, VideoMode::Aspect));
-            assert_eq!(s.view.rect, [x, 0.0, 480.0, 432.0], "{c:?} {platform:?}");
+            assert_eq!(s.view.rect, [x, 24.0, 480.0, 432.0], "{c:?} {platform:?}");
             assert_eq!(s.still, s.view);
             assert!(
-                s.bands.iter().any(|b| b[2] == c.w as f32 && b[3] == 48.0),
+                s.bands.iter().any(|b| b[2] == c.w as f32 && b[3] == 24.0),
                 "no band across the canvas for the wordmark: {:?}",
                 s.bands
             );
@@ -158,7 +158,7 @@ fn the_picture_is_the_game_s_own_window_inside_its_view() {
     );
     assert_eq!(
         at(Canvas::FOUR_THREE, Platform::Gb, VideoMode::Actual),
-        [80.0, 0.0, 480.0, 432.0]
+        [80.0, 24.0, 480.0, 432.0]
     );
     assert_eq!(
         at(Canvas::FOUR_THREE, Platform::Gbc, VideoMode::Stretch),
@@ -166,7 +166,7 @@ fn the_picture_is_the_game_s_own_window_inside_its_view() {
     );
     assert_eq!(
         at(Canvas::WIDE, Platform::Gb, VideoMode::Actual),
-        [120.0, 0.0, 480.0, 432.0]
+        [120.0, 24.0, 480.0, 432.0]
     );
     assert_eq!(
         at(Canvas::WIDE, Platform::Gba, VideoMode::Actual),
