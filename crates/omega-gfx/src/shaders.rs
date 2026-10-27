@@ -198,7 +198,8 @@ void main() {
 
 /// The sharp view with a screen look over it, chosen by `u_mode`: 1 an LCD's subpixel stripes,
 /// 2 its pixel grid, 3 the GBA's round dots, 4 a television's scanlines and 5 a CRT's scanlines
-/// through an aperture grille. The LCD looks follow the game's pixels, which they are drawn
+/// through an aperture grille, 10 a television's RGB, crisp and vivid under thin scanlines, and
+/// 11 its composite, colours smeared across each line. The LCD looks follow the game's pixels, which they are drawn
 /// over at whole scales; the scanlines and the CRT follow the screen's own rows and columns,
 /// laid over the picture once it is scaled, so they stay even at 4:3 and stretched. The LCD, grid and dot looks are slot's ports from the libretro
 /// shader collection (licenses/shaders.txt): LCD3x by Gigaherz and Dot by Themaister, both
@@ -235,12 +236,30 @@ bool white(vec3 c) {
 float paper(vec2 p) {
     return 0.5 * grain(p) + 0.25 * grain(p * 2.0) + 0.25 * grain(p * 4.0);
 }
+vec3 to_yiq(vec3 c) {
+    return vec3(
+        dot(c, vec3(0.299, 0.587, 0.114)),
+        dot(c, vec3(0.596, -0.274, -0.322)),
+        dot(c, vec3(0.211, -0.523, 0.312))
+    );
+}
+vec3 from_yiq(vec3 q) {
+    return vec3(
+        q.x + 0.956 * q.y + 0.621 * q.z,
+        q.x - 0.272 * q.y - 0.647 * q.z,
+        q.x - 1.106 * q.y + 1.703 * q.z
+    );
+}
+vec3 tap(vec2 texel, float dx) {
+    return to_yiq(texture2D(u_game, (floor(texel) + vec2(0.5 + dx, 0.5)) / u_src).rgb);
+}
 void main() {
     // the curved tube bows the picture out from its middle, a little more down than across,
     // and leaves black past its edges, their corners rounded
     vec2 uv = v_uv;
     float tube = 1.0;
-    if (u_mode > 8.5) {
+    bool curved = u_mode > 8.5 && u_mode < 9.5;
+    if (curved) {
         vec2 p = uv * 2.0 - 1.0;
         p *= 1.0 + vec2(0.035, 0.05) * p.yx * p.yx;
         vec2 room = 1.0 - abs(p);
@@ -259,7 +278,26 @@ void main() {
     vec2 edge = (grid_band(f + hp) - grid_band(f - hp)) / (2.0 * hp);
     float line = max(edge.x, edge.y);
     float lum = dot(c, vec3(0.299, 0.587, 0.114));
-    if (u_mode > 8.5) {
+    if (u_mode > 10.5) {
+        // composite: luma a little soft, chroma smeared over five texels of the line, and a
+        // faint crawl where the two differ, under light scanlines
+        vec3 mid = tap(texel, 0.0);
+        vec3 near_l = tap(texel, -1.0);
+        vec3 near_r = tap(texel, 1.0);
+        vec3 far_l = tap(texel, -2.0);
+        vec3 far_r = tap(texel, 2.0);
+        float luma = 0.6 * mid.x + 0.2 * (near_l.x + near_r.x);
+        vec2 chroma = 0.3 * mid.yz + 0.22 * (near_l.yz + near_r.yz) + 0.13 * (far_l.yz + far_r.yz);
+        float crawl = sin(3.141592654 * (floor(texel.x) + floor(texel.y)));
+        luma += 0.035 * crawl * length(chroma);
+        c = clamp(from_yiq(vec3(luma, chroma * 1.1)), 0.0, 1.0);
+        c = min(c * (1.0 - 0.3 * row) * 1.1, vec3(1.0));
+    } else if (u_mode > 9.5) {
+        // RGB: every pixel as the console drew it, a little more vivid, in thin scanlines
+        c = mix(vec3(lum), c, 1.2);
+        c = clamp(c, 0.0, 1.0);
+        c = min(c * (1.0 - 0.25 * row) * 1.08, vec3(1.0));
+    } else if (curved) {
         c *= 0.7 + 0.3 * sin(fract(texel.y) * 3.141592654);
         float m = mod(floor(gl_FragCoord.x), 3.0);
         vec3 mask = m < 0.5 ? vec3(1.0, 0.7, 0.7) : (m < 1.5 ? vec3(0.7, 1.0, 0.7) : vec3(0.7, 0.7, 1.0));

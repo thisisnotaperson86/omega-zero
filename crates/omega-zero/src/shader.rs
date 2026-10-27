@@ -9,7 +9,7 @@ pub const SHADER_FILE: &str = "Config/shader.ini";
 
 /// The looks SELECT+X goes round for `platform`, none first: a handheld's LCD stripes, pixel
 /// grid, round dots, paper and see-through pixels, and on the Game Boy its greens; or a
-/// television's scanlines and CRT.
+/// television's scanlines, CRT, RGB and composite.
 pub fn looks_for(platform: Platform) -> &'static [Look] {
     const HANDHELD: [Look; 6] = [
         Look::Off,
@@ -35,7 +35,14 @@ pub fn looks_for(platform: Platform) -> &'static [Look] {
         | Platform::Pce
         | Platform::Nes
         | Platform::Md
-        | Platform::Sms => &[Look::Off, Look::Scanlines, Look::Crt, Look::Curved],
+        | Platform::Sms => &[
+            Look::Off,
+            Look::Scanlines,
+            Look::Crt,
+            Look::Curved,
+            Look::Rgb,
+            Look::Composite,
+        ],
     }
 }
 

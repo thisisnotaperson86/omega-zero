@@ -44,10 +44,16 @@ pub enum Look {
     /// The CRT on a curved tube: its picture bowed out to round dark corners, its scanlines
     /// following the bow.
     Curved,
+    /// A television fed by the console's RGB: crisp and vivid pixels, with thin gaps between
+    /// the scanlines.
+    Rgb,
+    /// A television fed by the console's composite: the picture a little soft, its colours
+    /// smeared across the line and fringing at the edges of anything coloured.
+    Composite,
 }
 
 impl Look {
-    pub const ALL: [Look; 10] = [
+    pub const ALL: [Look; 12] = [
         Look::Off,
         Look::Lcd,
         Look::Grid,
@@ -58,6 +64,8 @@ impl Look {
         Look::Transparent,
         Look::Dmg,
         Look::Curved,
+        Look::Rgb,
+        Look::Composite,
     ];
 
     /// The look's number in the look shader's `u_mode`.
@@ -73,6 +81,8 @@ impl Look {
             Look::Transparent => 7.0,
             Look::Dmg => 8.0,
             Look::Curved => 9.0,
+            Look::Rgb => 10.0,
+            Look::Composite => 11.0,
         }
     }
 
@@ -88,6 +98,8 @@ impl Look {
             Look::Transparent => "transparent",
             Look::Dmg => "dmg",
             Look::Curved => "curved",
+            Look::Rgb => "rgb",
+            Look::Composite => "composite",
         }
     }
 

@@ -1,12 +1,12 @@
 //! The Mega Drive cart, in its two shells: the Mega Drive's of Japan and Europe, and the
 //! Genesis's of America.
 //!
-//! Both are drawn 4 units to the millimetre. The Mega Drive cart is 112 by 130 mm, its top
-//! corners rolled round, its label in a round-cornered well over the top of its face, the
-//! console's name across the label's foot, and grip ridges under it; the Genesis cart is 110 by
-//! 135 mm and squarer, three grip ridges across its top, its label in a well under them and
-//! more ridges under that. Each label well is the shape of ScreenScraper's scans, 1.2 to 1.
-//! Both are 20 mm thick and black. The ridges, bar and wells are relief in the face, not
+//! Both are drawn 4 units to the millimetre, and both stand wider than they are tall, as the
+//! carts do. The Mega Drive cart is 112 by 76 mm, its top corners rolled round, its label in a
+//! round-cornered well across the face with a black shoulder each side of it, ribbed for the
+//! grip, and the console's name across the label's foot; the Genesis cart is 110 by 78 mm and
+//! squarer, three grip ridges across its top and its label in a well under them. Each label
+//! well is the shape of ScreenScraper's scans, 1.2 to 1. Both are 20 mm thick and black. The ridges, bar and wells are relief in the face, not
 //! geometry. Both faces are drawn about 1.78 pixels to the millimetre, as the NES carts are.
 
 use std::sync::OnceLock;
@@ -39,45 +39,45 @@ pub const GENESIS_THICK: f32 = 20.0 / 110.0;
 /// size it stands at, so its label lands a texel to a pixel there.
 pub const SHELF_SCALE: f32 = 1.0;
 
-/// The Mega Drive cart's outline, right half, in drawing units (448 by 520), clockwise from the
+/// The Mega Drive cart's outline, right half, in drawing units (448 by 304), clockwise from the
 /// top: its round top corner in three cuts and its foot in two. The left half is its mirror.
 const MEGA_DRIVE_HALF: &[(f32, f32)] = &[
-    (408.0, 0.0),
-    (428.0, 5.36),
-    (442.64, 20.0),
-    (448.0, 40.0),
-    (448.0, 512.0),
-    (445.66, 517.66),
-    (440.0, 520.0),
+    (416.0, 0.0),
+    (432.0, 4.29),
+    (443.71, 16.0),
+    (448.0, 32.0),
+    (448.0, 296.0),
+    (445.66, 301.66),
+    (440.0, 304.0),
 ];
-const MEGA_DRIVE_UNITS: (f32, f32) = (448.0, 520.0);
+const MEGA_DRIVE_UNITS: (f32, f32) = (448.0, 304.0);
 
-/// The Genesis cart's, right half, in drawing units (440 by 540): its top corner in three cuts
+/// The Genesis cart's, right half, in drawing units (440 by 312): its top corner in three cuts
 /// and its foot in two.
 const GENESIS_HALF: &[(f32, f32)] = &[
     (430.0, 0.0),
     (435.0, 1.34),
     (438.66, 5.0),
     (440.0, 10.0),
-    (440.0, 534.0),
-    (438.24, 538.24),
-    (434.0, 540.0),
+    (440.0, 306.0),
+    (438.24, 310.24),
+    (434.0, 312.0),
 ];
-const GENESIS_UNITS: (f32, f32) = (440.0, 540.0);
+const GENESIS_UNITS: (f32, f32) = (440.0, 312.0);
 
 /// The size of each face in pixels. Each is a multiple of four across, so it halves onto the art
 /// grid in the middle of the row, and an even number down.
 pub const MEGA_DRIVE_W: u32 = 200;
-pub const MEGA_DRIVE_H: u32 = 232;
+pub const MEGA_DRIVE_H: u32 = 136;
 pub const GENESIS_W: u32 = 196;
-pub const GENESIS_H: u32 = 240;
+pub const GENESIS_H: u32 = 140;
 
 /// The label on each face, in its pixels: the inside of its well, 1.2 to 1 as ScreenScraper's
-/// scans are. The Mega Drive cart's is 92 mm by 77 across the top of its face, its corners round;
-/// the Genesis cart's 86 by 72 under its grip ridges.
-const MEGA_DRIVE_LABEL: (u32, u32, u32, u32) = (18, 18, 164, 137);
+/// scans are. The Mega Drive cart's is 80 mm by 67 across its face, its corners round; the
+/// Genesis cart's 78 by 65 under its grip ridges.
+const MEGA_DRIVE_LABEL: (u32, u32, u32, u32) = (29, 5, 142, 119);
 const MEGA_DRIVE_LABEL_ROUND: u32 = 5;
-const GENESIS_LABEL: (u32, u32, u32, u32) = (22, 38, 152, 127);
+const GENESIS_LABEL: (u32, u32, u32, u32) = (28, 14, 139, 116);
 
 /// How far in from the outline a clear shell's plastic lightens at its rim, in pixels.
 const RIM: u32 = 5;

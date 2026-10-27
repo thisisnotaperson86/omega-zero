@@ -234,6 +234,8 @@ fn select_and_x_goes_round_a_system_s_looks_and_keeps_them_for_the_system() {
         Look::Scanlines,
         Look::Crt,
         Look::Curved,
+        Look::Rgb,
+        Look::Composite,
         Look::Off,
         Look::Scanlines,
     ] {
@@ -332,7 +334,14 @@ fn each_system_offers_its_own_screen_s_looks() {
     ] {
         assert_eq!(
             looks_for(p),
-            [Look::Off, Look::Scanlines, Look::Crt, Look::Curved],
+            [
+                Look::Off,
+                Look::Scanlines,
+                Look::Crt,
+                Look::Curved,
+                Look::Rgb,
+                Look::Composite
+            ],
             "{p:?}"
         );
     }

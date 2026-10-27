@@ -184,6 +184,8 @@ impl Toast {
                 omega_gfx::Look::Scanlines => "Scanlines",
                 omega_gfx::Look::Crt => "CRT",
                 omega_gfx::Look::Curved => "CRT curved",
+                omega_gfx::Look::Rgb => "RGB",
+                omega_gfx::Look::Composite => "Composite",
             },
             Toast::OneDisc => "Only one disc",
             Toast::CardReadOnly => "Read-only: SELECT+START",
