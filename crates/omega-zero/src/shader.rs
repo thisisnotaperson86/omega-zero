@@ -29,7 +29,7 @@ pub fn looks_for(platform: Platform) -> &'static [Look] {
             Look::Transparent,
             Look::Dmg,
         ],
-        Platform::Gba | Platform::Gbc | Platform::Gg => &HANDHELD,
+        Platform::Gba | Platform::Gbc | Platform::Gg | Platform::Ngpc => &HANDHELD,
         Platform::Snes
         | Platform::Ps1
         | Platform::Pce

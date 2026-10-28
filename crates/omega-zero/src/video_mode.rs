@@ -156,7 +156,10 @@ pub fn screen_on_frame(
     }
     let actual = source_rect(platform, VideoMode::Actual);
     let (cw, ch) = (c.w as f32, c.h as f32);
-    if matches!(platform, Platform::Gb | Platform::Gbc | Platform::Gg) {
+    if matches!(
+        platform,
+        Platform::Gb | Platform::Gbc | Platform::Gg | Platform::Ngpc
+    ) {
         return game_boy_actual(c, platform);
     }
     if cw >= FRAME.0 && ch >= FRAME.1 {
@@ -194,7 +197,7 @@ pub fn screen_on_frame(
                 bands: around(c, view.rect),
             }
         }
-        Platform::Gb | Platform::Gbc | Platform::Gg => {
+        Platform::Gb | Platform::Gbc | Platform::Gg | Platform::Ngpc => {
             let whole = [(cw - FRAME.0) / 2.0, (ch - FRAME.1) / 2.0, FRAME.0, FRAME.1];
             Screen {
                 view: sharp(whole, actual),

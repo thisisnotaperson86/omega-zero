@@ -462,10 +462,14 @@ impl Session {
             | Platform::Pce
             | Platform::PceCd
             | Platform::Nes
-            | Platform::Md
-            | Platform::Sms => Setup::Console,
-            // the Game Gear has no cable or palette here, only its LCD's ghosting
-            Platform::Gg => Setup::Handheld {
+            | Platform::Md => Setup::Console { fm: false },
+            // a Japanese Master System game gets the FM sound unit its soundtrack was made for
+            Platform::Sms => Setup::Console {
+                fm: omega_store::Region::from_tags(stem) == Some(omega_store::Region::Japan),
+            },
+            // the Game Gear has no cable or palette here, only its LCD's ghosting, and the
+            // Neo Geo Pocket Color stands the same
+            Platform::Gg | Platform::Ngpc => Setup::Handheld {
                 serial: "auto",
                 colour: false,
                 ghosting: self.app.lcd_ghosting(),

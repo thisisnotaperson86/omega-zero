@@ -102,7 +102,8 @@ pub fn gb_shell_of(cart: &Cart) -> Option<GbShell> {
         | Platform::Md
         | Platform::Gg
         | Platform::Sms
-        | Platform::PceCd => None,
+        | Platform::PceCd
+        | Platform::Ngpc => None,
         Platform::Gb | Platform::Gbc => Some(match cart.shell.map(|c| c.outline) {
             Some(Outline::Notched) => GbShell::Notched,
             Some(Outline::Rounded) => GbShell::Rounded,
@@ -126,7 +127,8 @@ pub fn model_of(cart: &Cart) -> CartModel {
         Platform::Pce => CartModel::HuCard,
         Platform::Nes => CartModel::Nes(nes::shell_of(cart)),
         Platform::Md => CartModel::Md(md::shell_of(cart)),
-        Platform::Gg => CartModel::Sega8(Sega8Shell::GameGear),
+        // the Neo Geo Pocket's cart stands as a Game Gear's until it has its own model
+        Platform::Gg | Platform::Ngpc => CartModel::Sega8(Sega8Shell::GameGear),
         Platform::Sms => CartModel::Sega8(sega8::master_system_shell_of(cart)),
     }
 }
@@ -198,7 +200,7 @@ pub fn seated_box(platform: Platform) -> (u32, u32) {
     match platform {
         Platform::Gba => (SEATED_W, SEATED_H),
         Platform::Md => md::face_box(MdShell::MegaDrive),
-        Platform::Gg => sega8::face_box(Sega8Shell::GameGear),
+        Platform::Gg | Platform::Ngpc => sega8::face_box(Sega8Shell::GameGear),
         Platform::Sms => sega8::face_box(Sega8Shell::MasterSystem),
         Platform::Nes => nes::face_box(NesShell::Nes),
         Platform::Pce => (hucard::W, hucard::H),
@@ -219,7 +221,7 @@ pub fn cart_box(platform: Platform) -> (u32, u32) {
     model_box(match platform {
         Platform::Gba => CartModel::Gba,
         Platform::Md => CartModel::Md(MdShell::MegaDrive),
-        Platform::Gg => CartModel::Sega8(Sega8Shell::GameGear),
+        Platform::Gg | Platform::Ngpc => CartModel::Sega8(Sega8Shell::GameGear),
         Platform::Sms => CartModel::Sega8(Sega8Shell::MasterSystem),
         Platform::Pce => CartModel::HuCard,
         Platform::Nes => CartModel::Nes(NesShell::Nes),
@@ -263,7 +265,9 @@ pub fn face_labels(platform: Platform) -> Vec<(u32, u32)> {
         .filter(|model| match model {
             CartModel::Gba => platform == Platform::Gba,
             CartModel::Md(_) => platform == Platform::Md,
-            CartModel::Sega8(Sega8Shell::GameGear) => platform == Platform::Gg,
+            CartModel::Sega8(Sega8Shell::GameGear) => {
+                matches!(platform, Platform::Gg | Platform::Ngpc)
+            }
             CartModel::Sega8(Sega8Shell::MasterSystem | Sega8Shell::MarkIii) => {
                 platform == Platform::Sms
             }

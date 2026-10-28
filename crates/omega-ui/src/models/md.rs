@@ -2,11 +2,12 @@
 //! Genesis's of America.
 //!
 //! Both are drawn 4 units to the millimetre, and both stand wider than they are tall, as the
-//! carts do. The Mega Drive cart is 112 by 76 mm, its top corners rolled round, its label in a
-//! round-cornered well across the face with a black shoulder each side of it, ribbed for the
-//! grip, and the console's name across the label's foot; the Genesis cart is 110 by 78 mm and
-//! squarer, three grip ridges across its top and its label in a well under them. Each label
-//! well is the shape of ScreenScraper's scans, 1.2 to 1. Both are 20 mm thick and black. The ridges, bar and wells are relief in the face, not
+//! carts do, 109 by 70 mm and 17 mm thick, at the Master System cart's scale, the same 2.4
+//! pixels to the millimetre. The Mega Drive cart has its top corners rolled round, its label in
+//! a round-cornered well across the face with a black shoulder each side of it, ribbed for the
+//! grip, and the console's name across the label's foot; the Genesis cart has three grip
+//! ridges across its top and its label in a well under them. Each label well is the shape of
+//! ScreenScraper's scans, 1.2 to 1. Both are black. The ridges, bar and wells are relief in the face, not
 //! geometry. Both faces are drawn about 1.78 pixels to the millimetre, as the NES carts are.
 
 use std::sync::OnceLock;
@@ -32,52 +33,52 @@ pub enum MdShell {
 
 /// How thick each cart is, as a share of its width: 20 mm on the Mega Drive cart's 112 and the
 /// Genesis cart's 110.
-pub const MEGA_DRIVE_THICK: f32 = 20.0 / 112.0;
-pub const GENESIS_THICK: f32 = 20.0 / 110.0;
+pub const MEGA_DRIVE_THICK: f32 = 17.0 / 109.0;
+pub const GENESIS_THICK: f32 = 17.0 / 109.0;
 
 /// How big the cart stands on the shelf, as a share of its own size: its face is made at the
 /// size it stands at, so its label lands a texel to a pixel there.
 pub const SHELF_SCALE: f32 = 1.0;
 
-/// The Mega Drive cart's outline, right half, in drawing units (448 by 304), clockwise from the
+/// The Mega Drive cart's outline, right half, in drawing units (436 by 280), clockwise from the
 /// top: its round top corner in three cuts and its foot in two. The left half is its mirror.
 const MEGA_DRIVE_HALF: &[(f32, f32)] = &[
-    (416.0, 0.0),
-    (432.0, 4.29),
-    (443.71, 16.0),
-    (448.0, 32.0),
-    (448.0, 296.0),
-    (445.66, 301.66),
-    (440.0, 304.0),
+    (408.0, 0.0),
+    (422.0, 3.75),
+    (432.25, 14.0),
+    (436.0, 28.0),
+    (436.0, 272.0),
+    (433.66, 277.66),
+    (428.0, 280.0),
 ];
-const MEGA_DRIVE_UNITS: (f32, f32) = (448.0, 304.0);
+const MEGA_DRIVE_UNITS: (f32, f32) = (436.0, 280.0);
 
-/// The Genesis cart's, right half, in drawing units (440 by 312): its top corner in three cuts
+/// The Genesis cart's, right half, in drawing units (436 by 280): its top corner in three cuts
 /// and its foot in two.
 const GENESIS_HALF: &[(f32, f32)] = &[
-    (430.0, 0.0),
-    (435.0, 1.34),
-    (438.66, 5.0),
-    (440.0, 10.0),
-    (440.0, 306.0),
-    (438.24, 310.24),
-    (434.0, 312.0),
+    (426.0, 0.0),
+    (431.0, 1.34),
+    (434.66, 5.0),
+    (436.0, 10.0),
+    (436.0, 274.0),
+    (434.24, 278.24),
+    (430.0, 280.0),
 ];
-const GENESIS_UNITS: (f32, f32) = (440.0, 312.0);
+const GENESIS_UNITS: (f32, f32) = (436.0, 280.0);
 
 /// The size of each face in pixels. Each is a multiple of four across, so it halves onto the art
 /// grid in the middle of the row, and an even number down.
-pub const MEGA_DRIVE_W: u32 = 200;
-pub const MEGA_DRIVE_H: u32 = 136;
-pub const GENESIS_W: u32 = 196;
-pub const GENESIS_H: u32 = 140;
+pub const MEGA_DRIVE_W: u32 = 264;
+pub const MEGA_DRIVE_H: u32 = 170;
+pub const GENESIS_W: u32 = 264;
+pub const GENESIS_H: u32 = 170;
 
 /// The label on each face, in its pixels: the inside of its well, 1.2 to 1 as ScreenScraper's
-/// scans are. The Mega Drive cart's is 80 mm by 67 across its face, its corners round; the
-/// Genesis cart's 78 by 65 under its grip ridges.
-const MEGA_DRIVE_LABEL: (u32, u32, u32, u32) = (29, 5, 142, 119);
+/// scans are. The Mega Drive cart's is 74 mm by 62 across its face, its corners round; the
+/// Genesis cart's 73 by 61 under its grip ridges.
+const MEGA_DRIVE_LABEL: (u32, u32, u32, u32) = (42, 5, 180, 150);
 const MEGA_DRIVE_LABEL_ROUND: u32 = 5;
-const GENESIS_LABEL: (u32, u32, u32, u32) = (28, 14, 139, 116);
+const GENESIS_LABEL: (u32, u32, u32, u32) = (44, 16, 176, 147);
 
 /// How far in from the outline a clear shell's plastic lightens at its rim, in pixels.
 const RIM: u32 = 5;

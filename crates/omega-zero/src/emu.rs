@@ -1601,6 +1601,7 @@ mod tests {
                         | Platform::Nes
                         | Platform::Gg
                         | Platform::Sms
+                        | Platform::Ngpc
                 ),
                 "{platform:?}"
             );

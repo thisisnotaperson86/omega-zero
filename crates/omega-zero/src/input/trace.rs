@@ -8,6 +8,9 @@ pub const TRACE_VAR: &str = "OMEGA_TRACE_INPUT";
 
 pub const TRACE_FILE: &str = "input-trace.log";
 
+/// An empty file of this name in the root turns the trace on.
+pub const TRACE_MARKER: &str = "input-trace.on";
+
 pub fn enabled() -> bool {
     std::env::var_os(TRACE_VAR).is_some_and(|v| v != "0")
 }

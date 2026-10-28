@@ -2,33 +2,36 @@ use std::path::Path;
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug, Default)]
 pub enum Platform {
-    #[default]
-    Gba,
+    Nes,
+    Snes,
     Gb,
     Gbc,
-    Snes,
+    #[default]
+    Gba,
+    Md,
+    Sms,
+    Gg,
     Ps1,
     Pce,
-    Nes,
-    Md,
-    Gg,
-    Sms,
     PceCd,
+    Ngpc,
 }
 
 impl Platform {
-    pub const ALL: [Platform; 11] = [
-        Platform::Gba,
+    /// Every system, shelved by maker: Nintendo's, Sega's, Sony's, NEC's and SNK's.
+    pub const ALL: [Platform; 12] = [
+        Platform::Nes,
+        Platform::Snes,
         Platform::Gb,
         Platform::Gbc,
-        Platform::Snes,
+        Platform::Gba,
+        Platform::Md,
+        Platform::Sms,
+        Platform::Gg,
         Platform::Ps1,
         Platform::Pce,
-        Platform::Nes,
-        Platform::Md,
-        Platform::Gg,
-        Platform::Sms,
         Platform::PceCd,
+        Platform::Ngpc,
     ];
 
     pub fn name(self) -> &'static str {
@@ -44,6 +47,7 @@ impl Platform {
             Platform::Gg => "Game Gear",
             Platform::Sms => "Master System",
             Platform::PceCd => "PC Engine CD",
+            Platform::Ngpc => "Neo Geo Pocket Color",
         }
     }
 
@@ -60,6 +64,7 @@ impl Platform {
             Platform::Gg => "GG",
             Platform::Sms => "SMS",
             Platform::PceCd => "PCECD",
+            Platform::Ngpc => "NGPC",
         }
     }
 
@@ -75,6 +80,7 @@ impl Platform {
             Platform::Gg => &["gg"],
             Platform::Sms => &["sms"],
             Platform::PceCd => &["cue", "chd", "m3u"],
+            Platform::Ngpc => &["ngp", "ngc", "ngpc"],
         }
     }
 
@@ -90,6 +96,7 @@ impl Platform {
             Platform::Gg => (160, 144),
             Platform::Sms => (256, 192),
             Platform::PceCd => (256, 240),
+            Platform::Ngpc => (160, 152),
         }
     }
 
@@ -110,6 +117,7 @@ impl Platform {
                 | Platform::Nes
                 | Platform::Gg
                 | Platform::Sms
+                | Platform::Ngpc
         )
     }
 

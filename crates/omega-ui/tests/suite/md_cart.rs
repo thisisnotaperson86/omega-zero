@@ -107,10 +107,10 @@ fn an_american_game_stands_as_a_genesis_cart_and_any_other_as_the_mega_drive_s()
 }
 
 #[test]
-fn each_mega_drive_shell_is_the_real_cart_s_shape_at_the_nes_carts_scale() {
+fn each_mega_drive_shell_is_the_real_cart_s_shape_at_the_master_system_carts_scale() {
     for (name, shell, real) in [
-        ("Mega Drive", MdShell::MegaDrive, (112.0, 76.0)),
-        ("Genesis", MdShell::Genesis, (110.0, 78.0)),
+        ("Mega Drive", MdShell::MegaDrive, (109.0, 70.0)),
+        ("Genesis", MdShell::Genesis, (109.0, 70.0)),
     ] {
         let (w, h) = model_box(CartModel::Md(shell));
         let aspect = w as f32 / h as f32;
@@ -124,10 +124,10 @@ fn each_mega_drive_shell_is_the_real_cart_s_shape_at_the_nes_carts_scale() {
         );
         let per_mm = w as f32 / real.0;
         assert!(
-            (per_mm / (212.0 / 120.0) - 1.0).abs() < 0.02,
+            (per_mm / (264.0 / 108.0) - 1.0).abs() < 0.02,
             "{name}: {per_mm} px/mm"
         );
-        assert!(CartModel::Md(shell).thick() > 0.17);
+        assert!(CartModel::Md(shell).thick() > 0.15);
     }
 }
 
@@ -183,8 +183,8 @@ fn a_mega_drive_label_fills_its_well_where_the_real_cart_has_it() {
     let carts = scan(d.path()).unwrap();
     // the share of the face the label takes, and where on the face it starts and ends
     for (stem, (wide, tall), starts, ends) in [
-        ("Sonic the Hedgehog (USA)", (0.7, 0.5), 0.08, 0.96),
-        ("Puyo Puyo (Japan)", (0.7, 0.55), 0.02, 0.97),
+        ("Sonic the Hedgehog (USA)", (0.65, 0.5), 0.08, 0.97),
+        ("Puyo Puyo (Japan)", (0.65, 0.55), 0.02, 0.97),
     ] {
         let face = cart_face(cart(&carts, stem));
         let (x0, y0, x1, y1) = colour_box(&face, ART).expect("the label art was not pasted");

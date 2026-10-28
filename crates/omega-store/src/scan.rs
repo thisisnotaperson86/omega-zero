@@ -77,7 +77,12 @@ pub fn scan(root: &Path) -> Result<Vec<Cart>, StoreError> {
                 Platform::Ps1 => (String::new(), crate::ps1::serial(&rom).unwrap_or_default()),
                 // a HuCard, an iNES image or a Sega 8-bit cart carries no header to read a title
                 // or code from
-                Platform::Pce | Platform::PceCd | Platform::Nes | Platform::Gg | Platform::Sms => {
+                Platform::Pce
+                | Platform::PceCd
+                | Platform::Nes
+                | Platform::Gg
+                | Platform::Sms
+                | Platform::Ngpc => {
                     (String::new(), String::new())
                 }
                 Platform::Md => (

@@ -73,7 +73,8 @@ impl ControlsView {
             | Platform::Nes
             | Platform::Md
             | Platform::Gg
-            | Platform::Sms => {}
+            | Platform::Sms
+            | Platform::Ngpc => {}
         }
         game.extend([
             ("SELECT+▲▼", "BRIGHTNESS"),

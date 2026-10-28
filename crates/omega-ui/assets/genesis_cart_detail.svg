@@ -1,22 +1,21 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 312">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 436 280">
   <!-- the cart's edges: its left and top catch the light, its right and bottom turn away -->
-  <rect x="0" y="10" width="6" height="296" fill="#fff" fill-opacity="0.3"/>
-  <rect x="10" y="0" width="420" height="5" fill="#fff" fill-opacity="0.3"/>
-  <rect x="434" y="10" width="6" height="296" fill="#000" fill-opacity="0.45"/>
-  <rect x="6" y="307" width="428" height="5" fill="#000" fill-opacity="0.35"/>
+  <rect x="0" y="10" width="6" height="264" fill="#fff" fill-opacity="0.3"/>
+  <rect x="10" y="0" width="416" height="5" fill="#fff" fill-opacity="0.3"/>
+  <rect x="430" y="10" width="6" height="264" fill="#000" fill-opacity="0.45"/>
+  <rect x="6" y="275" width="424" height="5" fill="#000" fill-opacity="0.35"/>
   <!-- the three grip ridges across the top, over the label -->
-  <rect x="40" y="8" width="360" height="4" fill="#000" fill-opacity="0.4"/>
-  <rect x="40" y="12" width="360" height="2" fill="#fff" fill-opacity="0.15"/>
-  <rect x="40" y="16" width="360" height="4" fill="#000" fill-opacity="0.4"/>
-  <rect x="40" y="20" width="360" height="2" fill="#fff" fill-opacity="0.15"/>
-  <rect x="40" y="24" width="360" height="4" fill="#000" fill-opacity="0.4"/>
-  <rect x="40" y="28" width="360" height="2" fill="#fff" fill-opacity="0.15"/>
+  <rect x="40" y="6" width="356" height="3" fill="#000" fill-opacity="0.4"/>
+  <rect x="40" y="9" width="356" height="2" fill="#fff" fill-opacity="0.15"/>
+  <rect x="40" y="12" width="356" height="3" fill="#000" fill-opacity="0.4"/>
+  <rect x="40" y="15" width="356" height="2" fill="#fff" fill-opacity="0.15"/>
+  <rect x="40" y="18" width="356" height="3" fill="#000" fill-opacity="0.4"/>
+  <rect x="40" y="21" width="356" height="2" fill="#fff" fill-opacity="0.15"/>
   <!-- the label's well: shadow along its top and left, a lit lip under and right of it -->
-  <rect x="59" y="27" width="326" height="4" fill="#000" fill-opacity="0.45"/>
-  <rect x="59" y="31" width="4" height="260" fill="#000" fill-opacity="0.4"/>
-  <rect x="63" y="291" width="322" height="4" fill="#fff" fill-opacity="0.25"/>
-  <rect x="381" y="31" width="4" height="264" fill="#fff" fill-opacity="0.22"/>
+  <rect x="69" y="22" width="299" height="4" fill="#000" fill-opacity="0.45"/>
+  <rect x="69" y="26" width="4" height="243" fill="#000" fill-opacity="0.4"/>
+  <rect x="73" y="269" width="295" height="4" fill="#fff" fill-opacity="0.25"/>
+  <rect x="364" y="26" width="4" height="247" fill="#fff" fill-opacity="0.22"/>
   <!-- the step along the foot, over the contacts -->
-  <rect x="24" y="299" width="392" height="3" fill="#000" fill-opacity="0.4"/>
-  <rect x="24" y="302" width="392" height="2" fill="#fff" fill-opacity="0.15"/>
+  <rect x="24" y="275" width="388" height="2" fill="#000" fill-opacity="0.4"/>
 </svg>

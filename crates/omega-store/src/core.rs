@@ -17,7 +17,7 @@ pub enum Core {
     Fceumm,
     GenesisPlusGx,
     PicoDrive,
-    BeetlePce,
+    BeetleNgp,
 }
 
 impl Core {
@@ -31,7 +31,7 @@ impl Core {
         Core::Fceumm,
         Core::GenesisPlusGx,
         Core::PicoDrive,
-        Core::BeetlePce,
+        Core::BeetleNgp,
     ];
 
     pub fn as_str(&self) -> &'static str {
@@ -45,7 +45,7 @@ impl Core {
             Core::Fceumm => "fceumm",
             Core::GenesisPlusGx => "genesis_plus_gx",
             Core::PicoDrive => "picodrive",
-            Core::BeetlePce => "pce",
+            Core::BeetleNgp => "ngp",
         }
     }
 
@@ -76,7 +76,7 @@ impl Core {
             Core::Fceumm => "FCEU",
             Core::GenesisPlusGx => "GPGX",
             Core::PicoDrive => "Pico",
-            Core::BeetlePce => "BPCE",
+            Core::BeetleNgp => "NGP",
         }
     }
 
@@ -92,7 +92,7 @@ impl Core {
             Core::Fceumm => "FCEUmm",
             Core::GenesisPlusGx => "Genesis Plus GX",
             Core::PicoDrive => "PicoDrive",
-            Core::BeetlePce => "Beetle PCE",
+            Core::BeetleNgp => "Beetle NeoPop",
         }
     }
 
@@ -107,7 +107,7 @@ impl Core {
             "fceumm" => Some(Core::Fceumm),
             "genesis_plus_gx" => Some(Core::GenesisPlusGx),
             "picodrive" => Some(Core::PicoDrive),
-            "pce" => Some(Core::BeetlePce),
+            "ngp" => Some(Core::BeetleNgp),
             _ => None,
         }
     }
@@ -124,7 +124,8 @@ impl Core {
             Platform::Gb | Platform::Gbc => &[Core::Mgba],
             Platform::Snes => &[Core::Snes9x, Core::Supafaust],
             Platform::Ps1 => &[Core::PcsxRearmed],
-            Platform::Pce | Platform::PceCd => &[Core::PceFast, Core::BeetlePce],
+            Platform::Pce | Platform::PceCd => &[Core::PceFast],
+            Platform::Ngpc => &[Core::BeetleNgp],
             Platform::Nes => &[Core::Fceumm],
             Platform::Md | Platform::Gg | Platform::Sms => {
                 &[Core::PicoDrive, Core::GenesisPlusGx]

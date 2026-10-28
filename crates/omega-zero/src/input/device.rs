@@ -26,7 +26,10 @@ pub struct DeviceInput {
 
 impl DeviceInput {
     pub fn open(root: &Path) -> Self {
-        DeviceInput::open_in(Path::new(DEV), Path::new(SYS), root, trace::enabled())
+        // the trace is on by the environment, or by an empty `input-trace.on` in the root, for a
+        // handheld with no way to set one
+        let traced = trace::enabled() || root.join(trace::TRACE_MARKER).is_file();
+        DeviceInput::open_in(Path::new(DEV), Path::new(SYS), root, traced)
     }
 
     pub fn open_in(dev: &Path, sys: &Path, root: &Path, trace: bool) -> Self {

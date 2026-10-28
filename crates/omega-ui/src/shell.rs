@@ -134,7 +134,7 @@ pub fn shell_for(cart: &Cart) -> Shell {
             MdShell::MegaDrive => MEGA_DRIVE_SHELL,
             MdShell::Genesis => GENESIS_SHELL,
         },
-        Platform::Gg => GAME_GEAR_SHELL,
+        Platform::Gg | Platform::Ngpc => GAME_GEAR_SHELL,
         Platform::Sms => MASTER_SYSTEM_SHELL,
         Platform::Nes => match crate::models::nes::shell_of(cart) {
             NesShell::Nes => NES_SHELL,

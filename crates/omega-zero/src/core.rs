@@ -51,7 +51,11 @@ pub enum Setup<'a> {
         /// colouring of it.
         palette: Option<GbPalette>,
     },
-    Console,
+    Console {
+        /// Whether the Master System's FM sound unit is fitted, as a Japanese game of it
+        /// expects: PicoDrive says a game of another region may not run with it.
+        fm: bool,
+    },
 }
 
 impl<'a> Setup<'a> {
@@ -66,15 +70,19 @@ impl<'a> Setup<'a> {
                 link,
                 ..
             } => (serial, colour, ghosting, link),
-            Setup::Console => ("auto", false, false, None),
+            Setup::Console { .. } => ("auto", false, false, None),
         }
     }
 
     fn palette(self) -> Option<GbPalette> {
         match self {
             Setup::Handheld { palette, .. } => palette,
-            Setup::Console => None,
+            Setup::Console { .. } => None,
         }
+    }
+
+    fn fm(self) -> bool {
+        matches!(self, Setup::Console { fm: true })
     }
 }
 
@@ -101,7 +109,8 @@ fn stand_in(core: Core) -> MockCore {
         Core::Mgba | Core::Gpsp => MockCore::new(),
         Core::Snes9x | Core::Supafaust => MockCore::sized(256, 224),
         Core::PcsxRearmed => MockCore::sized(320, 240),
-        Core::PceFast | Core::BeetlePce => MockCore::sized(256, 240),
+        Core::PceFast => MockCore::sized(256, 240),
+        Core::BeetleNgp => MockCore::sized(160, 152),
         Core::Fceumm => MockCore::sized(256, 224),
         Core::GenesisPlusGx | Core::PicoDrive => MockCore::sized(320, 224),
     }
@@ -158,6 +167,9 @@ fn open_named(
         // the options are there before the core starts, for one that reads them as it does
         let mut options = core_options(core, serial, root::has_real_bios(root), colour, ghosting);
         options.extend(palette_options(core, setup.palette()));
+        if setup.fm() {
+            options.push(("picodrive_smsfm", "on".to_string()));
+        }
         let early: Vec<(&str, &str)> = options.iter().map(|(k, v)| (*k, v.as_str())).collect();
         match LibretroCore::open_with_options(path, &bios, &saves, &early) {
             Ok(mut opened) => {
@@ -171,6 +183,9 @@ fn open_named(
                 );
                 for (key, value) in palette_options(core, setup.palette()) {
                     opened.set_option(key, &value);
+                }
+                if setup.fm() {
+                    opened.set_option("picodrive_smsfm", "on");
                 }
                 if let Some(player) = link {
                     apply_link_options(&mut opened, core, player);
@@ -207,7 +222,7 @@ pub fn colour_option(which: Core, on: bool) -> Option<(&'static str, &'static st
         | Core::Supafaust
         | Core::PcsxRearmed
         | Core::PceFast
-        | Core::BeetlePce
+        | Core::BeetleNgp
         | Core::Fceumm
         | Core::GenesisPlusGx
         | Core::PicoDrive => None,
@@ -237,7 +252,7 @@ pub fn ghosting_option(which: Core, on: bool) -> Option<(&'static str, &'static 
         | Core::Supafaust
         | Core::PcsxRearmed
         | Core::PceFast
-        | Core::BeetlePce
+        | Core::BeetleNgp
         | Core::Fceumm => None,
     }
 }
@@ -350,9 +365,8 @@ pub fn core_options(
             put("pcsx_rearmed_memcard2", "none");
         }
         Core::PceFast => put("pce_fast_frameskip", "auto"),
-        // Beetle PCE has no frameskip to turn on, and keeps its defaults, the System Card 3
-        // among them
-        Core::BeetlePce => {}
+        // Beetle NeoPop keeps its defaults, its language English
+        Core::BeetleNgp => {}
         Core::Fceumm => {
             put("fceumm_overscan_v_top", "8");
             put("fceumm_overscan_v_bottom", "8");
