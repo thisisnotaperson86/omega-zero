@@ -54,6 +54,7 @@ impl Core {
         match self {
             Core::Supafaust => "mednafen_supafaust",
             Core::PceFast => "mednafen_pce_fast",
+            Core::BeetleNgp => "mednafen_ngp",
             other => other.as_str(),
         }
     }
@@ -125,6 +126,7 @@ impl Core {
             Platform::Snes => &[Core::Snes9x, Core::Supafaust],
             Platform::Ps1 => &[Core::PcsxRearmed],
             Platform::Pce | Platform::PceCd => &[Core::PceFast],
+            Platform::SegaCd => &[Core::PicoDrive],
             Platform::Ngpc => &[Core::BeetleNgp],
             Platform::Nes => &[Core::Fceumm],
             Platform::Md | Platform::Gg | Platform::Sms => {

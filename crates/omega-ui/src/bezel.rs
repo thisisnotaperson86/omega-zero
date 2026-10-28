@@ -43,7 +43,7 @@ pub fn bezel_mark_face(platform: Platform, height: u32) -> Option<UndoFace> {
         | Platform::Md
         | Platform::Gg
         | Platform::Sms
-        | Platform::PceCd
+        | Platform::PceCd | Platform::SegaCd
         | Platform::Ngpc => return None,
     };
     let mark = decode(png)?;

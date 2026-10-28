@@ -28,7 +28,7 @@ pub fn shelf_scale(platform: Platform) -> f32 {
         Platform::Pce => hucard::SHELF_SCALE,
         Platform::Gb | Platform::Gbc => GB_SHELF_SCALE,
         Platform::Snes => snes::SHELF_SCALE,
-        Platform::Ps1 | Platform::PceCd => disc::SHELF_SCALE,
+        Platform::Ps1 | Platform::PceCd | Platform::SegaCd => disc::SHELF_SCALE,
     }
 }
 

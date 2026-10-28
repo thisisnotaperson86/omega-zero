@@ -202,3 +202,30 @@ fn a_line_naming_a_core_the_platform_cannot_run_is_dropped() {
 fn the_picker_board_has_exactly_two_sockets() {
     assert_eq!(Core::for_platform(Platform::Gba).len(), 2);
 }
+
+/// The device bundle ships the libraries named in the taskfile's DEVICE_CORES, and omega-zero
+/// looks for `<library>_libretro.so`: a core whose library name is not among them is never found
+/// on the card, and the game runs the test pattern.
+#[test]
+fn every_core_s_library_is_one_the_device_bundle_ships() {
+    let taskfile = include_str!("../../../../taskfile.yml");
+    let start = taskfile.find("DEVICE_CORES:").expect("DEVICE_CORES in the taskfile") + "DEVICE_CORES:".len();
+    let mut shipped = String::new();
+    for line in taskfile[start..].lines() {
+        let trimmed = line.trim();
+        // the value runs on over the lines that are not another variable or a comment
+        if trimmed.starts_with('#') || (trimmed.contains(": ") && !shipped.is_empty()) || trimmed.ends_with(':') {
+            break;
+        }
+        shipped.push(' ');
+        shipped.push_str(trimmed);
+    }
+    let shipped: Vec<&str> = shipped.split_whitespace().collect();
+    for core in Core::ALL {
+        assert!(
+            shipped.contains(&core.library()),
+            "{core:?} looks for {}_libretro.so, which DEVICE_CORES {shipped:?} does not ship",
+            core.library()
+        );
+    }
+}

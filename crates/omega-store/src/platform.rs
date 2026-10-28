@@ -9,6 +9,7 @@ pub enum Platform {
     #[default]
     Gba,
     Md,
+    SegaCd,
     Sms,
     Gg,
     Ps1,
@@ -19,13 +20,14 @@ pub enum Platform {
 
 impl Platform {
     /// Every system, shelved by maker: Nintendo's, Sega's, Sony's, NEC's and SNK's.
-    pub const ALL: [Platform; 12] = [
+    pub const ALL: [Platform; 13] = [
         Platform::Nes,
         Platform::Snes,
         Platform::Gb,
         Platform::Gbc,
         Platform::Gba,
         Platform::Md,
+        Platform::SegaCd,
         Platform::Sms,
         Platform::Gg,
         Platform::Ps1,
@@ -47,6 +49,7 @@ impl Platform {
             Platform::Gg => "Game Gear",
             Platform::Sms => "Master System",
             Platform::PceCd => "PC Engine CD",
+            Platform::SegaCd => "Sega CD",
             Platform::Ngpc => "Neo Geo Pocket Color",
         }
     }
@@ -64,6 +67,7 @@ impl Platform {
             Platform::Gg => "GG",
             Platform::Sms => "SMS",
             Platform::PceCd => "PCECD",
+            Platform::SegaCd => "SEGACD",
             Platform::Ngpc => "NGPC",
         }
     }
@@ -79,7 +83,7 @@ impl Platform {
             Platform::Md => &["md", "gen", "bin"],
             Platform::Gg => &["gg"],
             Platform::Sms => &["sms"],
-            Platform::PceCd => &["cue", "chd", "m3u"],
+            Platform::PceCd | Platform::SegaCd => &["cue", "chd", "m3u"],
             Platform::Ngpc => &["ngp", "ngc", "ngpc"],
         }
     }
@@ -96,6 +100,7 @@ impl Platform {
             Platform::Gg => (160, 144),
             Platform::Sms => (256, 192),
             Platform::PceCd => (256, 240),
+            Platform::SegaCd => (320, 224),
             Platform::Ngpc => (160, 152),
         }
     }

@@ -460,7 +460,7 @@ impl Session {
             Platform::Snes
             | Platform::Ps1
             | Platform::Pce
-            | Platform::PceCd
+            | Platform::PceCd | Platform::SegaCd
             | Platform::Nes
             | Platform::Md => Setup::Console { fm: false },
             // a Japanese Master System game gets the FM sound unit its soundtrack was made for

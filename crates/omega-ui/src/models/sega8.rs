@@ -1,9 +1,11 @@
 //! Sega's 8-bit carts: the Game Gear's, the Master System's Mega Cartridge of Europe and America,
 //! and Japan's Mark III cart.
 //!
-//! Both are drawn 4 units to the millimetre. The Game Gear cart is 68 by 60 mm and 10 thick,
-//! wider than it is tall, its top corners cut off, its label in a well across most of its face
-//! and three grip ridges along its foot; the Mega Cartridge is 100 by 68 mm and 20 thick, wider
+//! Each is drawn 4 units to the millimetre. The Game Gear cart is 68 by 66 mm and 11 thick, its
+//! top corners round, a thick cap with three grip ridges across its top, its label in a well
+//! across most of its face and a pill-shaped grip in its foot; the Neo Geo Pocket cart is 54 by
+//! 47 mm and 8.5 thick, a raised lip across its top, its label in a well under it and two pill
+//! grips with a triangle between them in its foot; the Mega Cartridge is 100 by 68 mm and 20 thick, wider
 //! than tall, only a strip of label across the top of its black face and grooves under it; the
 //! Mark III cart is 74 by 86 mm and 17 thick, its label a picture over most of its face, grip
 //! notches down its sides. Each label well is the shape of ScreenScraper's scan of that label. Both are black. The ridges and wells are relief in
@@ -22,6 +24,8 @@ const MASTER_SYSTEM_SVG: &str = include_str!("../../assets/mastersystem_cart.svg
 const MASTER_SYSTEM_DETAIL_SVG: &str = include_str!("../../assets/mastersystem_cart_detail.svg");
 const MARK_III_SVG: &str = include_str!("../../assets/markiii_cart.svg");
 const MARK_III_DETAIL_SVG: &str = include_str!("../../assets/markiii_cart_detail.svg");
+const NEO_GEO_POCKET_SVG: &str = include_str!("../../assets/neogeopocket_cart.svg");
+const NEO_GEO_POCKET_DETAIL_SVG: &str = include_str!("../../assets/neogeopocket_cart_detail.svg");
 
 /// Sega's 8-bit carts a model is built for.
 #[derive(Copy, Clone, PartialEq, Eq, Debug, Hash)]
@@ -31,27 +35,45 @@ pub enum Sega8Shell {
     MasterSystem,
     /// Japan's Mark III cart.
     MarkIii,
+    /// SNK's Neo Geo Pocket and Pocket Color cart.
+    NeoGeoPocket,
 }
 
 /// How thick each cart is, as a share of its width.
-pub const GAME_GEAR_THICK: f32 = 10.0 / 68.0;
+pub const GAME_GEAR_THICK: f32 = 11.0 / 68.0;
 pub const MASTER_SYSTEM_THICK: f32 = 20.0 / 100.0;
 pub const MARK_III_THICK: f32 = 17.0 / 74.0;
+pub const NEO_GEO_POCKET_THICK: f32 = 8.5 / 54.0;
 
 /// How big the cart stands on the shelf, as a share of its own size: its face is made at the
 /// size it stands at, so its label lands a texel to a pixel there.
 pub const SHELF_SCALE: f32 = 1.0;
 
-/// The Game Gear cart's outline, right half, in drawing units (272 by 240), clockwise from the
-/// top: its cut top corner and its foot in two. The left half is its mirror.
+/// The Game Gear cart's outline, right half, in drawing units (272 by 264), clockwise from the
+/// top: its round top corner in three cuts and its foot in two. The left half is its mirror.
 const GAME_GEAR_HALF: &[(f32, f32)] = &[
-    (256.0, 0.0),
-    (272.0, 16.0),
-    (272.0, 234.0),
-    (270.24, 238.24),
-    (266.0, 240.0),
+    (250.0, 0.0),
+    (261.0, 2.95),
+    (269.05, 11.0),
+    (272.0, 22.0),
+    (272.0, 258.0),
+    (270.24, 262.24),
+    (266.0, 264.0),
 ];
-const GAME_GEAR_UNITS: (f32, f32) = (272.0, 240.0);
+const GAME_GEAR_UNITS: (f32, f32) = (272.0, 264.0);
+
+/// The Neo Geo Pocket cart's, right half, in drawing units (216 by 188): its round top corner and
+/// its foot in two cuts each.
+const NEO_GEO_POCKET_HALF: &[(f32, f32)] = &[
+    (202.0, 0.0),
+    (209.0, 1.88),
+    (214.12, 7.0),
+    (216.0, 14.0),
+    (216.0, 180.0),
+    (213.66, 185.66),
+    (208.0, 188.0),
+];
+const NEO_GEO_POCKET_UNITS: (f32, f32) = (216.0, 188.0);
 
 /// The Mega Cartridge's, right half, in drawing units (400 by 272): its round top corner and its
 /// foot in two cuts each.
@@ -79,17 +101,20 @@ const MARK_III_UNITS: (f32, f32) = (296.0, 344.0);
 /// The size of each face in pixels. Each is a multiple of four across, so it halves onto the art
 /// grid in the middle of the row, and an even number down.
 pub const GAME_GEAR_W: u32 = 280;
-pub const GAME_GEAR_H: u32 = 246;
+pub const GAME_GEAR_H: u32 = 272;
 pub const MASTER_SYSTEM_W: u32 = 264;
 pub const MASTER_SYSTEM_H: u32 = 180;
 pub const MARK_III_W: u32 = 200;
 pub const MARK_III_H: u32 = 232;
+pub const NEO_GEO_POCKET_W: u32 = 224;
+pub const NEO_GEO_POCKET_H: u32 = 194;
 
 /// The label on each face, in its pixels: the inside of its well.
-/// The Game Gear's label is ScreenScraper's scan's own shape, 236 by 172, so none of it is cut.
-const GAME_GEAR_LABEL: (u32, u32, u32, u32) = (22, 21, 236, 172);
+/// The Game Gear's label is ScreenScraper's scan's own shape, 1.36 to 1, so little of it is cut.
+const GAME_GEAR_LABEL: (u32, u32, u32, u32) = (28, 46, 227, 167);
 const MASTER_SYSTEM_LABEL: (u32, u32, u32, u32) = (11, 9, 242, 35);
 const MARK_III_LABEL: (u32, u32, u32, u32) = (14, 9, 172, 142);
+const NEO_GEO_POCKET_LABEL: (u32, u32, u32, u32) = (20, 47, 184, 99);
 
 /// How far in from the outline a clear shell's plastic lightens at its rim, in pixels.
 const RIM: u32 = 5;
@@ -109,6 +134,7 @@ pub(crate) fn outline(shell: Sega8Shell) -> (Vec<(f32, f32)>, (f32, f32)) {
         Sega8Shell::GameGear => (GAME_GEAR_HALF, GAME_GEAR_UNITS),
         Sega8Shell::MasterSystem => (MASTER_SYSTEM_HALF, MASTER_SYSTEM_UNITS),
         Sega8Shell::MarkIii => (MARK_III_HALF, MARK_III_UNITS),
+        Sega8Shell::NeoGeoPocket => (NEO_GEO_POCKET_HALF, NEO_GEO_POCKET_UNITS),
     };
     let mut all = half.to_vec();
     all.extend(half.iter().rev().map(|&(x, y)| (units.0 - x, y)));
@@ -121,6 +147,7 @@ pub(crate) fn thick(shell: Sega8Shell) -> f32 {
         Sega8Shell::GameGear => GAME_GEAR_THICK,
         Sega8Shell::MasterSystem => MASTER_SYSTEM_THICK,
         Sega8Shell::MarkIii => MARK_III_THICK,
+        Sega8Shell::NeoGeoPocket => NEO_GEO_POCKET_THICK,
     }
 }
 
@@ -130,6 +157,7 @@ pub fn silhouette(shell: Sega8Shell, w: u32, h: u32) -> Vec<u8> {
         Sega8Shell::GameGear => GAME_GEAR_SVG,
         Sega8Shell::MasterSystem => MASTER_SYSTEM_SVG,
         Sega8Shell::MarkIii => MARK_III_SVG,
+        Sega8Shell::NeoGeoPocket => NEO_GEO_POCKET_SVG,
     };
     rasterise_svg(svg, w, h).unwrap_or_else(|| vec![255; (w * h) as usize])
 }
@@ -140,6 +168,7 @@ pub(crate) fn face_box(shell: Sega8Shell) -> (u32, u32) {
         Sega8Shell::GameGear => (GAME_GEAR_W, GAME_GEAR_H),
         Sega8Shell::MasterSystem => (MASTER_SYSTEM_W, MASTER_SYSTEM_H),
         Sega8Shell::MarkIii => (MARK_III_W, MARK_III_H),
+        Sega8Shell::NeoGeoPocket => (NEO_GEO_POCKET_W, NEO_GEO_POCKET_H),
     }
 }
 
@@ -147,10 +176,12 @@ fn mask(shell: Sega8Shell) -> &'static [u8] {
     static GAME_GEAR: OnceLock<Vec<u8>> = OnceLock::new();
     static MASTER_SYSTEM: OnceLock<Vec<u8>> = OnceLock::new();
     static MARK_III: OnceLock<Vec<u8>> = OnceLock::new();
+    static NEO_GEO_POCKET: OnceLock<Vec<u8>> = OnceLock::new();
     let lock = match shell {
         Sega8Shell::GameGear => &GAME_GEAR,
         Sega8Shell::MasterSystem => &MASTER_SYSTEM,
         Sega8Shell::MarkIii => &MARK_III,
+        Sega8Shell::NeoGeoPocket => &NEO_GEO_POCKET,
     };
     lock.get_or_init(|| {
         let (w, h) = face_box(shell);
@@ -162,10 +193,12 @@ fn depth(shell: Sega8Shell) -> &'static [u8] {
     static GAME_GEAR: OnceLock<Vec<u8>> = OnceLock::new();
     static MASTER_SYSTEM: OnceLock<Vec<u8>> = OnceLock::new();
     static MARK_III: OnceLock<Vec<u8>> = OnceLock::new();
+    static NEO_GEO_POCKET: OnceLock<Vec<u8>> = OnceLock::new();
     let lock = match shell {
         Sega8Shell::GameGear => &GAME_GEAR,
         Sega8Shell::MasterSystem => &MASTER_SYSTEM,
         Sega8Shell::MarkIii => &MARK_III,
+        Sega8Shell::NeoGeoPocket => &NEO_GEO_POCKET,
     };
     lock.get_or_init(|| {
         let (w, h) = face_box(shell);
@@ -177,10 +210,12 @@ fn detail(shell: Sega8Shell) -> &'static Detail {
     static GAME_GEAR: OnceLock<Detail> = OnceLock::new();
     static MASTER_SYSTEM: OnceLock<Detail> = OnceLock::new();
     static MARK_III: OnceLock<Detail> = OnceLock::new();
+    static NEO_GEO_POCKET: OnceLock<Detail> = OnceLock::new();
     let (lock, svg) = match shell {
         Sega8Shell::GameGear => (&GAME_GEAR, GAME_GEAR_DETAIL_SVG),
         Sega8Shell::MasterSystem => (&MASTER_SYSTEM, MASTER_SYSTEM_DETAIL_SVG),
         Sega8Shell::MarkIii => (&MARK_III, MARK_III_DETAIL_SVG),
+        Sega8Shell::NeoGeoPocket => (&NEO_GEO_POCKET, NEO_GEO_POCKET_DETAIL_SVG),
     };
     lock.get_or_init(|| {
         let (w, h) = face_box(shell);
@@ -196,6 +231,7 @@ pub(crate) fn spec(shell: Sega8Shell) -> Spec {
         Sega8Shell::GameGear => GAME_GEAR_LABEL,
         Sega8Shell::MasterSystem => MASTER_SYSTEM_LABEL,
         Sega8Shell::MarkIii => MARK_III_LABEL,
+        Sega8Shell::NeoGeoPocket => NEO_GEO_POCKET_LABEL,
     };
     Spec {
         w,

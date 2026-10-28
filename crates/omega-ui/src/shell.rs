@@ -129,7 +129,7 @@ pub fn shell_for(cart: &Cart) -> Shell {
             SnesShell::Ntsc => SNES_SHELL,
             SnesShell::Famicom => SFC_SHELL,
         },
-        Platform::Ps1 | Platform::PceCd => DEFAULT_SHELL,
+        Platform::Ps1 | Platform::PceCd | Platform::SegaCd => DEFAULT_SHELL,
         Platform::Md => match crate::models::md::shell_of(cart) {
             MdShell::MegaDrive => MEGA_DRIVE_SHELL,
             MdShell::Genesis => GENESIS_SHELL,

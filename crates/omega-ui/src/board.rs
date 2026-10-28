@@ -625,7 +625,7 @@ pub fn sockets_for(platform: Platform) -> Sockets {
         | Platform::Md
         | Platform::Gg
         | Platform::Sms
-        | Platform::PceCd
+        | Platform::PceCd | Platform::SegaCd
         | Platform::Ngpc => GBA_SOCKETS,
     }
 }
