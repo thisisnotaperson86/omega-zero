@@ -3,9 +3,9 @@
 //!
 //! Both are drawn 4 units to the millimetre, and both stand wider than they are tall, as the
 //! carts do, 109 by 70 mm and 17 mm thick, at the Master System cart's scale, the same 2.4
-//! pixels to the millimetre. The Mega Drive cart has its top corners rolled round, its label in
-//! a round-cornered well across the face with a black shoulder each side of it, ribbed for the
-//! grip, and the console's name across the label's foot; the Genesis cart has three grip
+//! pixels to the millimetre. The Mega Drive cart, drawn from its 3D model, has its label in a
+//! well that runs up to the top edge between two broad black shoulders, ribbed for the grip, a
+//! foot with a step under it, and the console's name across the label's foot; the Genesis cart has three grip
 //! ridges across its top and its label in a well under them. Each label well is the shape of
 //! ScreenScraper's scans, 1.2 to 1. Both are black. The ridges, bar and wells are relief in the face, not
 //! geometry. Both faces are drawn about 1.78 pixels to the millimetre, as the NES carts are.
@@ -43,13 +43,14 @@ pub const SHELF_SCALE: f32 = 1.0;
 /// The Mega Drive cart's outline, right half, in drawing units (436 by 280), clockwise from the
 /// top: its round top corner in three cuts and its foot in two. The left half is its mirror.
 const MEGA_DRIVE_HALF: &[(f32, f32)] = &[
-    (408.0, 0.0),
-    (422.0, 3.75),
-    (432.25, 14.0),
-    (436.0, 28.0),
-    (436.0, 272.0),
-    (433.66, 277.66),
-    (428.0, 280.0),
+    (423.0, 0.0),
+    (429.5, 1.74),
+    (434.26, 6.5),
+    (436.0, 13.0),
+    (436.0, 260.0),
+    (433.32, 270.0),
+    (426.0, 277.32),
+    (416.0, 280.0),
 ];
 const MEGA_DRIVE_UNITS: (f32, f32) = (436.0, 280.0);
 
@@ -74,9 +75,10 @@ pub const GENESIS_W: u32 = 264;
 pub const GENESIS_H: u32 = 170;
 
 /// The label on each face, in its pixels: the inside of its well, 1.2 to 1 as ScreenScraper's
-/// scans are. The Mega Drive cart's is 74 mm by 62 across its face, its corners round; the
+/// scans are. The Mega Drive cart's, from the 3D model of it, is 73 mm by 61, in a well 77 wide, between its
+/// shoulders and open to its top edge, its lower corners round; the
 /// Genesis cart's 73 by 61 under its grip ridges.
-const MEGA_DRIVE_LABEL: (u32, u32, u32, u32) = (42, 5, 180, 150);
+const MEGA_DRIVE_LABEL: (u32, u32, u32, u32) = (44, 4, 176, 147);
 const MEGA_DRIVE_LABEL_ROUND: u32 = 5;
 const GENESIS_LABEL: (u32, u32, u32, u32) = (44, 16, 176, 147);
 

@@ -160,19 +160,19 @@ fn a_mega_drive_face_is_clipped_to_its_own_silhouette_and_backed_by_its_own_shad
             assert_eq!(px[3], *cover, "{stem}: the shadow is not the cart's shape");
         }
     }
-    // the Mega Drive cart's top corners are rolled far rounder than the Genesis cart's
+    // the Mega Drive cart's lower corners are rounder than the Genesis cart's
     let (md, genesis) = (
         md_silhouette(MdShell::MegaDrive, 200, 232),
         md_silhouette(MdShell::Genesis, 200, 232),
     );
     assert_eq!(
-        md[200 * 4 + 4],
+        md[229 * 200 + 2],
         0,
-        "the Mega Drive cart's top corner is not round"
+        "the Mega Drive cart's lower corner is not round"
     );
     assert!(
-        genesis[200 * 4 + 4] > 200,
-        "the Genesis cart's top corner is round"
+        genesis[229 * 200 + 2] > 200,
+        "the Genesis cart's lower corner is round"
     );
 }
 
