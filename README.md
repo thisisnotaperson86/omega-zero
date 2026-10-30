@@ -6,7 +6,7 @@ SNES, Master System, Mega Drive, PC Engine and PlayStation games too, on a shelf
 you play them.</p>
 
 <p align="center">
-DISCLAIMER: This is a personal version from a frontend, for personal use, and will be subject to changes soon.
+DISCLAIMER: This is a personal test version from a frontend, for personal use, and will be subject to changes soon.
 </p>
 
 <p align="center">
