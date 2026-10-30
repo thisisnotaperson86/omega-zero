@@ -12,7 +12,7 @@
 
 use std::sync::OnceLock;
 
-use omega_store::{Cart, Outline, Region};
+use omega_store::{Cart, Outline};
 
 use crate::cart::{Board, Spec, PAD};
 use crate::silhouette::{depth_map, rasterise_detail, rasterise_svg, Detail};
@@ -85,16 +85,12 @@ const GENESIS_LABEL: (u32, u32, u32, u32) = (44, 16, 176, 147);
 /// How far in from the outline a clear shell's plastic lightens at its rim, in pixels.
 const RIM: u32 = 5;
 
-/// The shell `cart` comes in: the one `cart_shell.ini` names, else the Genesis cart for a game
-/// from America and the Mega Drive's for any other.
+/// The shell `cart` comes in: the one `cart_shell.ini` names, else the Mega Drive's for a game
+/// of any region. The Genesis shell is still there, for a game the ini gives it to.
 pub fn shell_of(cart: &Cart) -> MdShell {
     match cart.shell.map(|c| c.outline) {
-        Some(Outline::MegaDrive) => MdShell::MegaDrive,
         Some(Outline::Genesis) => MdShell::Genesis,
-        _ => match omega_store::md::region(&cart.rom, &cart.stem) {
-            Some(Region::Usa) => MdShell::Genesis,
-            _ => MdShell::MegaDrive,
-        },
+        _ => MdShell::MegaDrive,
     }
 }
 

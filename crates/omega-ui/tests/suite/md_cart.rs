@@ -78,7 +78,7 @@ fn colour_box(face: &CartFace, colour: [u8; 3]) -> Option<(u32, u32, u32, u32)> 
 }
 
 #[test]
-fn an_american_game_stands_as_a_genesis_cart_and_any_other_as_the_mega_drive_s() {
+fn a_game_of_any_region_stands_as_the_mega_drive_s_cart_unless_the_ini_names_the_genesis() {
     let d = root(
         &[
             ("Sonic the Hedgehog (USA, Europe)", b"JUE"),
@@ -89,11 +89,11 @@ fn an_american_game_stands_as_a_genesis_cart_and_any_other_as_the_mega_drive_s()
             ("Forced (USA)", b"U"),
         ],
         &[],
-        "Forced (USA) = megadrive 222225 solid\n",
+        "Forced (USA) = megadrive 222225 solid\nUntagged American = genesis 222225 solid\n",
     );
     let carts = scan(d.path()).unwrap();
     for (stem, shell) in [
-        ("Sonic the Hedgehog (USA, Europe)", MdShell::Genesis),
+        ("Sonic the Hedgehog (USA, Europe)", MdShell::MegaDrive),
         ("Puyo Puyo (Japan)", MdShell::MegaDrive),
         ("Probotector (Europe)", MdShell::MegaDrive),
         ("Untagged American", MdShell::Genesis),
@@ -143,7 +143,7 @@ fn a_mega_drive_face_is_clipped_to_its_own_silhouette_and_backed_by_its_own_shad
     );
     let carts = scan(d.path()).unwrap();
     for (stem, shell) in [
-        ("Sonic the Hedgehog (USA)", MdShell::Genesis),
+        ("Sonic the Hedgehog (USA)", MdShell::MegaDrive),
         ("Puyo Puyo (Japan)", MdShell::MegaDrive),
     ] {
         let face = cart_face(cart(&carts, stem));
@@ -183,7 +183,7 @@ fn a_mega_drive_label_fills_its_well_where_the_real_cart_has_it() {
     let carts = scan(d.path()).unwrap();
     // the share of the face the label takes, and where on the face it starts and ends
     for (stem, (wide, tall), starts, ends) in [
-        ("Sonic the Hedgehog (USA)", (0.65, 0.5), 0.08, 0.97),
+        ("Sonic the Hedgehog (USA)", (0.65, 0.5), 0.02, 0.97),
         ("Puyo Puyo (Japan)", (0.65, 0.55), 0.02, 0.97),
     ] {
         let face = cart_face(cart(&carts, stem));
@@ -243,7 +243,8 @@ fn both_mega_drive_carts_are_black() {
     let carts = scan(d.path()).unwrap();
     assert_eq!(
         shell_for(cart(&carts, "Sonic the Hedgehog (USA)")),
-        GENESIS_SHELL
+        MEGA_DRIVE_SHELL,
+        "an American game stands in the Mega Drive's shell too"
     );
     assert_eq!(
         shell_for(cart(&carts, "Puyo Puyo (Japan)")),
