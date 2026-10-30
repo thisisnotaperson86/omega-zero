@@ -1,9 +1,13 @@
 <h1 align="center"><img src="assets/logo/omega-zero-logo@2x.png" width="420" alt="omega-zero"></h1>
 
-<p align="center">A Game Boy-centric frontend for Anbernic H700 handhelds running
+<p align="center">  A Game Boy-centric frontend for Anbernic H700 handhelds running
 <a href="https://github.com/pvaibhav/BaseOS">BaseOS</a>. It plays GBA, GBC, GB and Game Gear games, and NES,
 SNES, Master System, Mega Drive, PC Engine and PlayStation games too, on a shelf of cartridges and discs that go down into the handheld when
 you play them.</p>
+
+<p align="center">
+DISCLAIMER: This is a personal version from a frontend, for personal use, and will be subject to changes soon.
+</p>
 
 <p align="center">
 <a href="https://oauramos.github.io/omega-zero/"><b>Site</b></a> ·
@@ -24,8 +28,8 @@ for its panel.
 | RG35XX SP | 640x480 | Main target, in daily use |
 | RG SP | 720x480 | Supported, not yet retested on hardware |
 | RG34XX SP, RG34XX | 720x480 | RG34XX in use on hardware |
-| RG35XX Plus / 2024, H, Pro | 640x480 | Untested |
-| RG40XX H, RG40XX V | 640x480 | Untested |
+| RG35XX Plus / 2024, H, Pro | 640x480 | Being tested on Hardware |
+| RG40XX H, RG40XX V | 640x480 | Being tested on Hardware |
 | RG CubeXX | 720x720 | Tested on hardware: sticks as d-pad, centred layout |
 | RG28XX | 480x640, turned | Experimental |
 
@@ -130,6 +134,7 @@ in the [wiki](https://github.com/oauramos/omega-zero/wiki).
 
 omega-zero is made by **Otávio ([@oauramos](https://github.com/oauramos))**.
 
+- Based on the [omega-zero](https://github.com/NukeBomB3000/omega-zero) fork (now renamed Cartridge) from [NukeBomB3000](https://github.com/NukeBomB3000).
 - Based on [slot](https://github.com/BrandonKowalski/slot) by
   [Brandon T. Kowalski](https://github.com/BrandonKowalski) (GPL-3.0). The code that hosts the
   cores, with their saves, sound and input, is still largely his.
