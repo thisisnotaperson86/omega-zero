@@ -111,6 +111,7 @@ fn stand_in(core: Core) -> MockCore {
         Core::PcsxRearmed => MockCore::sized(320, 240),
         Core::PceFast => MockCore::sized(256, 240),
         Core::BeetleNgp => MockCore::sized(160, 152),
+        Core::FbNeo => MockCore::sized(320, 224),
         Core::Fceumm => MockCore::sized(256, 224),
         Core::GenesisPlusGx | Core::PicoDrive => MockCore::sized(320, 224),
     }
@@ -223,6 +224,7 @@ pub fn colour_option(which: Core, on: bool) -> Option<(&'static str, &'static st
         | Core::PcsxRearmed
         | Core::PceFast
         | Core::BeetleNgp
+        | Core::FbNeo
         | Core::Fceumm
         | Core::GenesisPlusGx
         | Core::PicoDrive => None,
@@ -253,6 +255,7 @@ pub fn ghosting_option(which: Core, on: bool) -> Option<(&'static str, &'static 
         | Core::PcsxRearmed
         | Core::PceFast
         | Core::BeetleNgp
+        | Core::FbNeo
         | Core::Fceumm => None,
     }
 }
@@ -367,6 +370,9 @@ pub fn core_options(
         Core::PceFast => put("pce_fast_frameskip", "auto"),
         // Beetle NeoPop keeps its defaults, its language English
         Core::BeetleNgp => {}
+        // the Neo Geo runs on the UNIBIOS in the bundle's neogeo.zip, whichever region or
+        // console a game is from, so a game that asks for a BIOS of one region still starts
+        Core::FbNeo => put("fbneo-neogeo-mode", "UNIBIOS"),
         Core::Fceumm => {
             put("fceumm_overscan_v_top", "8");
             put("fceumm_overscan_v_bottom", "8");
@@ -482,9 +488,13 @@ mod tests {
     #[test]
     fn every_option_is_spelt_with_its_own_core_s_prefix() {
         for which in Core::ALL {
-            let prefix = format!("{}_", which.as_str());
+            // FinalBurn Neo spells its options with a hyphen, `fbneo-neogeo-mode`
+            let (under, hyphen) = (format!("{}_", which.as_str()), format!("{}-", which.as_str()));
             for key in keys(which) {
-                assert!(key.starts_with(&prefix), "{key} set on {which:?}");
+                assert!(
+                    key.starts_with(&under) || key.starts_with(&hyphen),
+                    "{key} set on {which:?}"
+                );
             }
         }
     }

@@ -69,7 +69,7 @@ impl ControlsView {
             Platform::Ps1 => game.push(("SELECT+MENU", "DISC")),
             Platform::Snes
             | Platform::Pce
-            | Platform::PceCd | Platform::SegaCd
+            | Platform::PceCd | Platform::NeoGeo | Platform::SegaCd
             | Platform::Nes
             | Platform::Md
             | Platform::Gg

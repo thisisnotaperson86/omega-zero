@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 762 584">
+  <!-- the cart's edges: its left and top catch the light, its right and bottom turn away -->
+  <rect x="0" y="12" width="6" height="560" fill="#fff" fill-opacity="0.3"/>
+  <rect x="12" y="0" width="738" height="5" fill="#fff" fill-opacity="0.3"/>
+  <rect x="756" y="12" width="6" height="560" fill="#000" fill-opacity="0.45"/>
+  <rect x="12" y="579" width="738" height="5" fill="#000" fill-opacity="0.35"/>
+  <!-- the label's well, open to the top edge in the middle of the face: shadow down its left
+       side, a lit lip under it, its right side turned away -->
+  <rect x="197" y="0" width="4" height="269" fill="#000" fill-opacity="0.45"/>
+  <rect x="201" y="269" width="363" height="4" rx="2" fill="#fff" fill-opacity="0.3"/>
+  <rect x="564" y="0" width="4" height="273" fill="#fff" fill-opacity="0.22"/>
+  <!-- the foot: a step along its top and ribs across it, split in four by three dividers -->
+  <rect x="12" y="446" width="738" height="4" fill="#000" fill-opacity="0.45"/>
+  <rect x="12" y="450" width="738" height="2" fill="#fff" fill-opacity="0.2"/>
+  <rect x="12" y="460" width="738" height="3" fill="#000" fill-opacity="0.35"/>
+  <rect x="12" y="463" width="738" height="2" fill="#fff" fill-opacity="0.12"/>
+  <rect x="12" y="470" width="738" height="3" fill="#000" fill-opacity="0.35"/>
+  <rect x="12" y="473" width="738" height="2" fill="#fff" fill-opacity="0.12"/>
+  <rect x="12" y="480" width="738" height="3" fill="#000" fill-opacity="0.35"/>
+  <rect x="12" y="483" width="738" height="2" fill="#fff" fill-opacity="0.12"/>
+  <rect x="12" y="490" width="738" height="3" fill="#000" fill-opacity="0.35"/>
+  <rect x="12" y="493" width="738" height="2" fill="#fff" fill-opacity="0.12"/>
+  <rect x="12" y="500" width="738" height="3" fill="#000" fill-opacity="0.35"/>
+  <rect x="12" y="503" width="738" height="2" fill="#fff" fill-opacity="0.12"/>
+  <rect x="12" y="510" width="738" height="3" fill="#000" fill-opacity="0.35"/>
+  <rect x="12" y="513" width="738" height="2" fill="#fff" fill-opacity="0.12"/>
+  <rect x="12" y="520" width="738" height="3" fill="#000" fill-opacity="0.35"/>
+  <rect x="12" y="523" width="738" height="2" fill="#fff" fill-opacity="0.12"/>
+  <rect x="12" y="530" width="738" height="3" fill="#000" fill-opacity="0.35"/>
+  <rect x="12" y="533" width="738" height="2" fill="#fff" fill-opacity="0.12"/>
+  <rect x="12" y="540" width="738" height="3" fill="#000" fill-opacity="0.35"/>
+  <rect x="12" y="543" width="738" height="2" fill="#fff" fill-opacity="0.12"/>
+  <rect x="12" y="550" width="738" height="3" fill="#000" fill-opacity="0.35"/>
+  <rect x="12" y="553" width="738" height="2" fill="#fff" fill-opacity="0.12"/>
+  <rect x="12" y="560" width="738" height="3" fill="#000" fill-opacity="0.35"/>
+  <rect x="12" y="563" width="738" height="2" fill="#fff" fill-opacity="0.12"/>
+  <rect x="97" y="452" width="4" height="124" fill="#000" fill-opacity="0.5"/>
+  <rect x="101" y="452" width="2" height="124" fill="#fff" fill-opacity="0.2"/>
+  <rect x="371" y="452" width="4" height="124" fill="#000" fill-opacity="0.5"/>
+  <rect x="375" y="452" width="2" height="124" fill="#fff" fill-opacity="0.2"/>
+  <rect x="661" y="452" width="4" height="124" fill="#000" fill-opacity="0.5"/>
+  <rect x="665" y="452" width="2" height="124" fill="#fff" fill-opacity="0.2"/>
+</svg>

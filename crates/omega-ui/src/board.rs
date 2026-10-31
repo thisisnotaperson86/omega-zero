@@ -625,7 +625,7 @@ pub fn sockets_for(platform: Platform) -> Sockets {
         | Platform::Md
         | Platform::Gg
         | Platform::Sms
-        | Platform::PceCd | Platform::SegaCd
+        | Platform::PceCd | Platform::NeoGeo | Platform::SegaCd
         | Platform::Ngpc => GBA_SOCKETS,
     }
 }
@@ -641,7 +641,8 @@ pub fn sockets_of(core: Core) -> Sockets {
         | Core::Fceumm
         | Core::GenesisPlusGx
         | Core::PicoDrive
-        | Core::BeetleNgp => GBA_SOCKETS,
+        | Core::BeetleNgp
+        | Core::FbNeo => GBA_SOCKETS,
     }
 }
 

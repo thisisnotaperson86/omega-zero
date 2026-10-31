@@ -78,7 +78,7 @@ pub fn scan(root: &Path) -> Result<Vec<Cart>, StoreError> {
                 // a HuCard, an iNES image or a Sega 8-bit cart carries no header to read a title
                 // or code from
                 Platform::Pce
-                | Platform::PceCd | Platform::SegaCd
+                | Platform::PceCd | Platform::NeoGeo | Platform::SegaCd
                 | Platform::Nes
                 | Platform::Gg
                 | Platform::Sms

@@ -15,12 +15,13 @@ pub enum Platform {
     Ps1,
     Pce,
     PceCd,
+    NeoGeo,
     Ngpc,
 }
 
 impl Platform {
     /// Every system, shelved by maker: Nintendo's, Sega's, Sony's, NEC's and SNK's.
-    pub const ALL: [Platform; 13] = [
+    pub const ALL: [Platform; 14] = [
         Platform::Nes,
         Platform::Snes,
         Platform::Gb,
@@ -33,6 +34,7 @@ impl Platform {
         Platform::Ps1,
         Platform::Pce,
         Platform::PceCd,
+        Platform::NeoGeo,
         Platform::Ngpc,
     ];
 
@@ -50,6 +52,7 @@ impl Platform {
             Platform::Sms => "Master System",
             Platform::PceCd => "PC Engine CD",
             Platform::SegaCd => "Sega CD",
+            Platform::NeoGeo => "Neo Geo",
             Platform::Ngpc => "Neo Geo Pocket Color",
         }
     }
@@ -68,6 +71,7 @@ impl Platform {
             Platform::Sms => "SMS",
             Platform::PceCd => "PCECD",
             Platform::SegaCd => "SEGACD",
+            Platform::NeoGeo => "NEOGEO",
             Platform::Ngpc => "NGPC",
         }
     }
@@ -85,6 +89,7 @@ impl Platform {
             Platform::Sms => &["sms"],
             Platform::PceCd | Platform::SegaCd => &["cue", "chd", "m3u"],
             Platform::Ngpc => &["ngp", "ngc", "ngpc"],
+            Platform::NeoGeo => &["zip"],
         }
     }
 
@@ -101,6 +106,7 @@ impl Platform {
             Platform::Sms => (256, 192),
             Platform::PceCd => (256, 240),
             Platform::SegaCd => (320, 224),
+            Platform::NeoGeo => (320, 224),
             Platform::Ngpc => (160, 152),
         }
     }

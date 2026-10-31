@@ -1,5 +1,8 @@
 //! The Mega Drive cart, in its two shells: the Mega Drive's of Japan and Europe, and the
-//! Genesis's of America.
+//! Genesis's of America, and with them SNK's Neo Geo AES cart, the same kind of cart at a larger
+//! size: 190.5 by 146 mm and 31.75 thick, drawn at about 1.55 pixels to the millimetre, its label
+//! in a well that opens to the top edge in the middle of its face and a ribbed foot of four
+//! panels under it.
 //!
 //! Both are drawn 4 units to the millimetre, and both stand wider than they are tall, as the
 //! carts do, 109 by 70 mm and 17 mm thick, at the Master System cart's scale, the same 2.4
@@ -7,8 +10,8 @@
 //! well that runs up to the top edge between two broad black shoulders, ribbed for the grip, a
 //! foot with a step under it, and the console's name across the label's foot; the Genesis cart has three grip
 //! ridges across its top and its label in a well under them. Each label well is the shape of
-//! ScreenScraper's scans, 1.2 to 1. Both are black. The ridges, bar and wells are relief in the face, not
-//! geometry. Both faces are drawn about 1.78 pixels to the millimetre, as the NES carts are.
+//! ScreenScraper's scans, 1.2 to 1. All are black. The ridges, ribs and wells are relief in the
+//! face, not geometry.
 
 use std::sync::OnceLock;
 
@@ -21,6 +24,8 @@ const MEGA_DRIVE_SVG: &str = include_str!("../../assets/megadrive_cart.svg");
 const MEGA_DRIVE_DETAIL_SVG: &str = include_str!("../../assets/megadrive_cart_detail.svg");
 const GENESIS_SVG: &str = include_str!("../../assets/genesis_cart.svg");
 const GENESIS_DETAIL_SVG: &str = include_str!("../../assets/genesis_cart_detail.svg");
+const NEO_GEO_SVG: &str = include_str!("../../assets/neogeoaes_cart.svg");
+const NEO_GEO_DETAIL_SVG: &str = include_str!("../../assets/neogeoaes_cart_detail.svg");
 
 /// The Mega Drive cart shells a model is built for.
 #[derive(Copy, Clone, PartialEq, Eq, Debug, Hash)]
@@ -29,12 +34,15 @@ pub enum MdShell {
     MegaDrive,
     /// The Genesis's, of America.
     Genesis,
+    /// SNK's Neo Geo AES.
+    NeoGeo,
 }
 
 /// How thick each cart is, as a share of its width: 20 mm on the Mega Drive cart's 112 and the
 /// Genesis cart's 110.
 pub const MEGA_DRIVE_THICK: f32 = 17.0 / 109.0;
 pub const GENESIS_THICK: f32 = 17.0 / 109.0;
+pub const NEO_GEO_THICK: f32 = 31.75 / 190.5;
 
 /// How big the cart stands on the shelf, as a share of its own size: its face is made at the
 /// size it stands at, so its label lands a texel to a pixel there.
@@ -67,12 +75,28 @@ const GENESIS_HALF: &[(f32, f32)] = &[
 ];
 const GENESIS_UNITS: (f32, f32) = (436.0, 280.0);
 
+/// The Neo Geo AES cart's, right half, in drawing units (762 by 584): its round corners in
+/// three cuts each.
+const NEO_GEO_HALF: &[(f32, f32)] = &[
+    (750.0, 0.0),
+    (756.0, 1.6),
+    (760.4, 6.0),
+    (762.0, 12.0),
+    (762.0, 572.0),
+    (760.4, 578.0),
+    (756.0, 582.4),
+    (750.0, 584.0),
+];
+const NEO_GEO_UNITS: (f32, f32) = (762.0, 584.0);
+
 /// The size of each face in pixels. Each is a multiple of four across, so it halves onto the art
 /// grid in the middle of the row, and an even number down.
 pub const MEGA_DRIVE_W: u32 = 264;
 pub const MEGA_DRIVE_H: u32 = 170;
 pub const GENESIS_W: u32 = 264;
 pub const GENESIS_H: u32 = 170;
+pub const NEO_GEO_W: u32 = 296;
+pub const NEO_GEO_H: u32 = 226;
 
 /// The label on each face, in its pixels: the inside of its well, 1.2 to 1 as ScreenScraper's
 /// scans are. The Mega Drive cart's, from the 3D model of it, is 73 mm by 61, in a well 77 wide, between its
@@ -81,6 +105,7 @@ pub const GENESIS_H: u32 = 170;
 const MEGA_DRIVE_LABEL: (u32, u32, u32, u32) = (44, 4, 176, 147);
 const MEGA_DRIVE_LABEL_ROUND: u32 = 5;
 const GENESIS_LABEL: (u32, u32, u32, u32) = (44, 16, 176, 147);
+const NEO_GEO_LABEL: (u32, u32, u32, u32) = (78, 4, 141, 100);
 
 /// How far in from the outline a clear shell's plastic lightens at its rim, in pixels.
 const RIM: u32 = 5;
@@ -99,6 +124,7 @@ pub(crate) fn outline(shell: MdShell) -> (Vec<(f32, f32)>, (f32, f32)) {
     let (half, units) = match shell {
         MdShell::MegaDrive => (MEGA_DRIVE_HALF, MEGA_DRIVE_UNITS),
         MdShell::Genesis => (GENESIS_HALF, GENESIS_UNITS),
+        MdShell::NeoGeo => (NEO_GEO_HALF, NEO_GEO_UNITS),
     };
     let mut all = half.to_vec();
     all.extend(half.iter().rev().map(|&(x, y)| (units.0 - x, y)));
@@ -110,6 +136,7 @@ pub(crate) fn thick(shell: MdShell) -> f32 {
     match shell {
         MdShell::MegaDrive => MEGA_DRIVE_THICK,
         MdShell::Genesis => GENESIS_THICK,
+        MdShell::NeoGeo => NEO_GEO_THICK,
     }
 }
 
@@ -118,6 +145,7 @@ pub fn silhouette(shell: MdShell, w: u32, h: u32) -> Vec<u8> {
     let svg = match shell {
         MdShell::MegaDrive => MEGA_DRIVE_SVG,
         MdShell::Genesis => GENESIS_SVG,
+        MdShell::NeoGeo => NEO_GEO_SVG,
     };
     rasterise_svg(svg, w, h).unwrap_or_else(|| vec![255; (w * h) as usize])
 }
@@ -127,15 +155,18 @@ pub(crate) fn face_box(shell: MdShell) -> (u32, u32) {
     match shell {
         MdShell::MegaDrive => (MEGA_DRIVE_W, MEGA_DRIVE_H),
         MdShell::Genesis => (GENESIS_W, GENESIS_H),
+        MdShell::NeoGeo => (NEO_GEO_W, NEO_GEO_H),
     }
 }
 
 fn mask(shell: MdShell) -> &'static [u8] {
     static MEGA_DRIVE: OnceLock<Vec<u8>> = OnceLock::new();
     static GENESIS: OnceLock<Vec<u8>> = OnceLock::new();
+    static NEO_GEO: OnceLock<Vec<u8>> = OnceLock::new();
     let lock = match shell {
         MdShell::MegaDrive => &MEGA_DRIVE,
         MdShell::Genesis => &GENESIS,
+        MdShell::NeoGeo => &NEO_GEO,
     };
     lock.get_or_init(|| {
         let (w, h) = face_box(shell);
@@ -146,9 +177,11 @@ fn mask(shell: MdShell) -> &'static [u8] {
 fn depth(shell: MdShell) -> &'static [u8] {
     static MEGA_DRIVE: OnceLock<Vec<u8>> = OnceLock::new();
     static GENESIS: OnceLock<Vec<u8>> = OnceLock::new();
+    static NEO_GEO: OnceLock<Vec<u8>> = OnceLock::new();
     let lock = match shell {
         MdShell::MegaDrive => &MEGA_DRIVE,
         MdShell::Genesis => &GENESIS,
+        MdShell::NeoGeo => &NEO_GEO,
     };
     lock.get_or_init(|| {
         let (w, h) = face_box(shell);
@@ -159,9 +192,11 @@ fn depth(shell: MdShell) -> &'static [u8] {
 fn detail(shell: MdShell) -> &'static Detail {
     static MEGA_DRIVE: OnceLock<Detail> = OnceLock::new();
     static GENESIS: OnceLock<Detail> = OnceLock::new();
+    static NEO_GEO: OnceLock<Detail> = OnceLock::new();
     let (lock, svg) = match shell {
         MdShell::MegaDrive => (&MEGA_DRIVE, MEGA_DRIVE_DETAIL_SVG),
         MdShell::Genesis => (&GENESIS, GENESIS_DETAIL_SVG),
+        MdShell::NeoGeo => (&NEO_GEO, NEO_GEO_DETAIL_SVG),
     };
     lock.get_or_init(|| {
         let (w, h) = face_box(shell);
@@ -176,6 +211,7 @@ pub(crate) fn spec(shell: MdShell) -> Spec {
     let (label, label_round) = match shell {
         MdShell::MegaDrive => (MEGA_DRIVE_LABEL, MEGA_DRIVE_LABEL_ROUND),
         MdShell::Genesis => (GENESIS_LABEL, 0),
+        MdShell::NeoGeo => (NEO_GEO_LABEL, 0),
     };
     Spec {
         w,

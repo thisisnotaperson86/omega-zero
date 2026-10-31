@@ -102,7 +102,7 @@ pub fn gb_shell_of(cart: &Cart) -> Option<GbShell> {
         | Platform::Md
         | Platform::Gg
         | Platform::Sms
-        | Platform::PceCd | Platform::SegaCd
+        | Platform::PceCd | Platform::NeoGeo | Platform::SegaCd
         | Platform::Ngpc => None,
         Platform::Gb | Platform::Gbc => Some(match cart.shell.map(|c| c.outline) {
             Some(Outline::Notched) => GbShell::Notched,
@@ -127,6 +127,7 @@ pub fn model_of(cart: &Cart) -> CartModel {
         Platform::Pce => CartModel::HuCard,
         Platform::Nes => CartModel::Nes(nes::shell_of(cart)),
         Platform::Md => CartModel::Md(md::shell_of(cart)),
+        Platform::NeoGeo => CartModel::Md(MdShell::NeoGeo),
         Platform::Gg => CartModel::Sega8(Sega8Shell::GameGear),
         Platform::Ngpc => CartModel::Sega8(Sega8Shell::NeoGeoPocket),
         Platform::Sms => CartModel::Sega8(sega8::master_system_shell_of(cart)),
@@ -200,6 +201,7 @@ pub fn seated_box(platform: Platform) -> (u32, u32) {
     match platform {
         Platform::Gba => (SEATED_W, SEATED_H),
         Platform::Md => md::face_box(MdShell::MegaDrive),
+        Platform::NeoGeo => md::face_box(MdShell::NeoGeo),
         Platform::Gg => sega8::face_box(Sega8Shell::GameGear),
         Platform::Ngpc => sega8::face_box(Sega8Shell::NeoGeoPocket),
         Platform::Sms => sega8::face_box(Sega8Shell::MasterSystem),
@@ -222,6 +224,7 @@ pub fn cart_box(platform: Platform) -> (u32, u32) {
     model_box(match platform {
         Platform::Gba => CartModel::Gba,
         Platform::Md => CartModel::Md(MdShell::MegaDrive),
+        Platform::NeoGeo => CartModel::Md(MdShell::NeoGeo),
         Platform::Gg => CartModel::Sega8(Sega8Shell::GameGear),
         Platform::Ngpc => CartModel::Sega8(Sega8Shell::NeoGeoPocket),
         Platform::Sms => CartModel::Sega8(Sega8Shell::MasterSystem),
@@ -266,6 +269,7 @@ pub fn face_labels(platform: Platform) -> Vec<(u32, u32)> {
         .into_iter()
         .filter(|model| match model {
             CartModel::Gba => platform == Platform::Gba,
+            CartModel::Md(MdShell::NeoGeo) => platform == Platform::NeoGeo,
             CartModel::Md(_) => platform == Platform::Md,
             CartModel::Sega8(Sega8Shell::GameGear) => platform == Platform::Gg,
             CartModel::Sega8(Sega8Shell::NeoGeoPocket) => platform == Platform::Ngpc,

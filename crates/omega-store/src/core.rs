@@ -18,10 +18,11 @@ pub enum Core {
     GenesisPlusGx,
     PicoDrive,
     BeetleNgp,
+    FbNeo,
 }
 
 impl Core {
-    pub const ALL: [Core; 10] = [
+    pub const ALL: [Core; 11] = [
         Core::Mgba,
         Core::Gpsp,
         Core::Snes9x,
@@ -32,6 +33,7 @@ impl Core {
         Core::GenesisPlusGx,
         Core::PicoDrive,
         Core::BeetleNgp,
+        Core::FbNeo,
     ];
 
     pub fn as_str(&self) -> &'static str {
@@ -46,6 +48,7 @@ impl Core {
             Core::GenesisPlusGx => "genesis_plus_gx",
             Core::PicoDrive => "picodrive",
             Core::BeetleNgp => "ngp",
+            Core::FbNeo => "fbneo",
         }
     }
 
@@ -55,6 +58,8 @@ impl Core {
             Core::Supafaust => "mednafen_supafaust",
             Core::PceFast => "mednafen_pce_fast",
             Core::BeetleNgp => "mednafen_ngp",
+            // the Neo Geo build of FinalBurn Neo, which is the one the bundle ships
+            Core::FbNeo => "fbneo_neogeo",
             other => other.as_str(),
         }
     }
@@ -78,6 +83,7 @@ impl Core {
             Core::GenesisPlusGx => "GPGX",
             Core::PicoDrive => "Pico",
             Core::BeetleNgp => "NGP",
+            Core::FbNeo => "FBN",
         }
     }
 
@@ -94,6 +100,7 @@ impl Core {
             Core::GenesisPlusGx => "Genesis Plus GX",
             Core::PicoDrive => "PicoDrive",
             Core::BeetleNgp => "Beetle NeoPop",
+            Core::FbNeo => "FinalBurn Neo",
         }
     }
 
@@ -109,6 +116,7 @@ impl Core {
             "genesis_plus_gx" => Some(Core::GenesisPlusGx),
             "picodrive" => Some(Core::PicoDrive),
             "ngp" => Some(Core::BeetleNgp),
+            "fbneo" => Some(Core::FbNeo),
             _ => None,
         }
     }
@@ -127,6 +135,7 @@ impl Core {
             Platform::Ps1 => &[Core::PcsxRearmed],
             Platform::Pce | Platform::PceCd => &[Core::PceFast],
             Platform::SegaCd => &[Core::PicoDrive],
+            Platform::NeoGeo => &[Core::FbNeo],
             Platform::Ngpc => &[Core::BeetleNgp],
             Platform::Nes => &[Core::Fceumm],
             Platform::Md | Platform::Gg | Platform::Sms => {
